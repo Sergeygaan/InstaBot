@@ -63,6 +63,7 @@
             this.panelImage.Name = "panelImage";
             this.panelImage.Size = new System.Drawing.Size(745, 700);
             this.panelImage.TabIndex = 1;
+            this.panelImage.Scroll += new System.Windows.Forms.ScrollEventHandler(this.PanelImage_Scroll);
             this.panelImage.Click += new System.EventHandler(this.panelImage_Click);
             // 
             // panelColor
@@ -72,6 +73,7 @@
             this.panelColor.Name = "panelColor";
             this.panelColor.Size = new System.Drawing.Size(745, 700);
             this.panelColor.TabIndex = 2;
+            this.panelColor.Scroll += new System.Windows.Forms.ScrollEventHandler(this.PanelColor_Scroll);
             this.panelColor.Click += new System.EventHandler(this.panelColor_Click);
             // 
             // button2

@@ -30,6 +30,7 @@
         {
             this.Main = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.buttonColorProfile = new System.Windows.Forms.Button();
             this.gbAccountSettings = new System.Windows.Forms.GroupBox();
             this.btnAccountLogout = new System.Windows.Forms.Button();
             this.btnAccountLogin = new System.Windows.Forms.Button();
@@ -39,7 +40,6 @@
             this.txtAccountPassword = new System.Windows.Forms.TextBox();
             this.txtAccountUsername = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.buttonColorProfile = new System.Windows.Forms.Button();
             this.Main.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.gbAccountSettings.SuspendLayout();
@@ -66,6 +66,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "User";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // buttonColorProfile
+            // 
+            this.buttonColorProfile.Location = new System.Drawing.Point(515, 371);
+            this.buttonColorProfile.Name = "buttonColorProfile";
+            this.buttonColorProfile.Size = new System.Drawing.Size(75, 23);
+            this.buttonColorProfile.TabIndex = 4;
+            this.buttonColorProfile.Text = "ColorProfile";
+            this.buttonColorProfile.UseVisualStyleBackColor = true;
+            this.buttonColorProfile.Click += new System.EventHandler(this.ButtonColorProfile_Click);
             // 
             // gbAccountSettings
             // 
@@ -155,16 +165,6 @@
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // buttonColorProfile
-            // 
-            this.buttonColorProfile.Location = new System.Drawing.Point(515, 371);
-            this.buttonColorProfile.Name = "buttonColorProfile";
-            this.buttonColorProfile.Size = new System.Drawing.Size(75, 23);
-            this.buttonColorProfile.TabIndex = 4;
-            this.buttonColorProfile.Text = "ColorProfile";
-            this.buttonColorProfile.UseVisualStyleBackColor = true;
-            this.buttonColorProfile.Click += new System.EventHandler(this.ButtonColorProfile_Click);
-            // 
             // InstaBot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -172,7 +172,8 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.Main);
             this.Name = "InstaBot";
-            this.Text = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "InstaBot";
             this.Main.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.gbAccountSettings.ResumeLayout(false);

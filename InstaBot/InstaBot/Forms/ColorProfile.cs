@@ -137,7 +137,7 @@ namespace ColorProfileForm
             }
         }
 
-        private List<Bitmap> _bitmap;
+        #region Panel
 
         private void panelImage_Click(object sender, EventArgs e)
         {
@@ -154,6 +154,24 @@ namespace ColorProfileForm
                 panelColor.Focus();
             }
         }
+
+        private void PanelImage_Scroll(object sender, ScrollEventArgs e)
+        {
+            var scroll = e.OldValue - e.NewValue;
+            panelColor.AutoScrollPosition = new Point(panelImage.HorizontalScroll.Value, panelImage.VerticalScroll.Value - scroll);
+            panelImage.AutoScrollPosition = new Point(panelImage.HorizontalScroll.Value, panelImage.VerticalScroll.Value - scroll);
+        }
+
+        private void PanelColor_Scroll(object sender, ScrollEventArgs e)
+        {
+            var scroll = e.OldValue - e.NewValue;
+            panelImage.AutoScrollPosition = new Point(panelColor.HorizontalScroll.Value, panelColor.VerticalScroll.Value - scroll);
+            panelColor.AutoScrollPosition = new Point(panelColor.HorizontalScroll.Value, panelColor.VerticalScroll.Value - scroll);
+        }
+
+        #endregion
+
+        private List<Bitmap> _bitmap;
 
         private InstagramClient _instagramClient;
     }
