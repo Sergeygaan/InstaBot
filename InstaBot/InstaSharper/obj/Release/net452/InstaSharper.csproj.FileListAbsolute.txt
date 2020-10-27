@@ -1,0 +1,9 @@
+C:\Users\Sergey\Desktop\Image\InstaSharper-develop\InstaSharper\bin\Release\net452\InstaSharper.dll
+C:\Users\Sergey\Desktop\Image\InstaSharper-develop\InstaSharper\bin\Release\net452\InstaSharper.pdb
+C:\Users\Sergey\Desktop\Image\InstaSharper-develop\InstaSharper\bin\Release\net452\Newtonsoft.Json.dll
+C:\Users\Sergey\Desktop\Image\InstaSharper-develop\InstaSharper\obj\Release\net452\InstaSharper.csprojAssemblyReference.cache
+C:\Users\Sergey\Desktop\Image\InstaSharper-develop\InstaSharper\obj\Release\net452\InstaSharper.csproj.CoreCompileInputs.cache
+C:\Users\Sergey\Desktop\Image\InstaSharper-develop\InstaSharper\obj\Release\net452\InstaSharper.AssemblyInfo.cs
+C:\Users\Sergey\Desktop\Image\InstaSharper-develop\InstaSharper\obj\Release\net452\InstaSharper.csproj.CopyComplete
+C:\Users\Sergey\Desktop\Image\InstaSharper-develop\InstaSharper\obj\Release\net452\InstaSharper.dll
+C:\Users\Sergey\Desktop\Image\InstaSharper-develop\InstaSharper\obj\Release\net452\InstaSharper.pdb
