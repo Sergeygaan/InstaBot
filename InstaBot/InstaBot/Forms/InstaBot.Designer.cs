@@ -30,7 +30,6 @@
         {
             this.Main = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.gbAccountSettings = new System.Windows.Forms.GroupBox();
             this.btnAccountLogout = new System.Windows.Forms.Button();
             this.btnAccountLogin = new System.Windows.Forms.Button();
@@ -39,6 +38,8 @@
             this.lblAccountUsername = new System.Windows.Forms.Label();
             this.txtAccountPassword = new System.Windows.Forms.TextBox();
             this.txtAccountUsername = new System.Windows.Forms.TextBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.buttonColorProfile = new System.Windows.Forms.Button();
             this.Main.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.gbAccountSettings.SuspendLayout();
@@ -56,6 +57,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.buttonColorProfile);
             this.tabPage1.Controls.Add(this.gbAccountSettings);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
@@ -64,16 +66,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "User";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(564, 400);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // gbAccountSettings
             // 
@@ -153,6 +145,26 @@
             this.txtAccountUsername.Size = new System.Drawing.Size(194, 20);
             this.txtAccountUsername.TabIndex = 0;
             // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(601, 400);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // buttonColorProfile
+            // 
+            this.buttonColorProfile.Location = new System.Drawing.Point(515, 371);
+            this.buttonColorProfile.Name = "buttonColorProfile";
+            this.buttonColorProfile.Size = new System.Drawing.Size(75, 23);
+            this.buttonColorProfile.TabIndex = 4;
+            this.buttonColorProfile.Text = "ColorProfile";
+            this.buttonColorProfile.UseVisualStyleBackColor = true;
+            this.buttonColorProfile.Click += new System.EventHandler(this.ButtonColorProfile_Click);
+            // 
             // InstaBot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -182,6 +194,7 @@
         private System.Windows.Forms.Label lblAccountUsername;
         private System.Windows.Forms.TextBox txtAccountPassword;
         private System.Windows.Forms.TextBox txtAccountUsername;
+        private System.Windows.Forms.Button buttonColorProfile;
     }
 }
 

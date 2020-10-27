@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using ColorProfileForm;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TestDataService;
 
@@ -25,8 +20,8 @@ namespace InstaBot
 
         private void BtnAccountLogin_Click(object sender, EventArgs e)
         {
-            var login = _instagramClient.Login(txtAccountUsername.Text, txtAccountPassword.Text);
- 
+            // var login = _instagramClient.Login(txtAccountUsername.Text, txtAccountPassword.Text);
+            var login = _instagramClient.Login("sergeygaan1@yandex.ru", "WiffThadd446530024");
             lblAccountLoginStatus.Text = @"Status: Attempting to log in.";
             if (login.Succeeded)
             {
@@ -47,8 +42,11 @@ namespace InstaBot
             btnAccountLogin.Enabled = false;
             btnAccountLogout.Enabled = true;
 
-            var userFollowers = _instagramClient.GetUserFollowers();
-            var a = _instagramClient.GetUserMedia();
+            //var userFollowers = _instagramClient.GetUserFollowers();
+            //var userMedia = _instagramClient.GetUserMedia(userFollowers.Value[10].UserName);
+            //var media = userMedia.Value.First();
+            //_instagramClient.UnLikeMedia(media.InstaIdentifier);
+            //_instagramClient.LikeMedia(media.InstaIdentifier);
         }
 
         private void BtnAccountLogout_Click(object sender, EventArgs e)
@@ -72,6 +70,18 @@ namespace InstaBot
             }
 
             btnAccountLogin.Enabled = true;
+        }
+
+        #endregion
+
+        #region ColorProfile
+
+        private void ButtonColorProfile_Click(object sender, EventArgs e)
+        {
+            using (var colorProfile = new ColorProfile(_instagramClient))
+            {
+                colorProfile.ShowDialog();
+            }
         }
 
         #endregion

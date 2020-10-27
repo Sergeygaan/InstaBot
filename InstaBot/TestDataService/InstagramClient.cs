@@ -67,14 +67,24 @@ namespace TestDataService
 
         #region Users
 
-        public IResult<InstaUserShortList> GetUserFollowers()
+        public IResult<InstaUserShortList> GetUserFollowers(int maxPagesToLoad = 1)
         {
-            return AwaitHelper.Waiting(() => _instaApi.GetUserFollowersAsync(_instaApi._user.LoggedInUser.UserName, PaginationParameters.MaxPagesToLoad(1)));
+            return AwaitHelper.Waiting(() => _instaApi.GetUserFollowersAsync("gaansia", PaginationParameters.MaxPagesToLoad(maxPagesToLoad)));
         }
 
-        public IResult<InstaMediaList> GetUserMedia()
+        public IResult<InstaMediaList> GetUserMedia(string user, int maxPagesToLoad = 1)
         {
-            return AwaitHelper.Waiting(() => _instaApi.GetUserMediaAsync("gaansia", PaginationParameters.MaxPagesToLoad(1)));
+            return AwaitHelper.Waiting(() => _instaApi.GetUserMediaAsync(user, PaginationParameters.MaxPagesToLoad(maxPagesToLoad)));
+        }
+
+        public IResult<bool> LikeMedia(string mediaId)
+        {
+            return AwaitHelper.Waiting(() => _instaApi.LikeMediaAsync(mediaId));
+        }
+
+        public IResult<bool> UnLikeMedia(string mediaId)
+        {
+            return AwaitHelper.Waiting(() => _instaApi.UnLikeMediaAsync(mediaId));
         }
 
         #endregion

@@ -49,15 +49,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InstaBot.cs">
+    <Compile Include="Forms\ColorProfile.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InstaBot.Designer.cs">
+    <Compile Include="Forms\ColorProfile.Designer.cs">
+      <DependentUpon>ColorProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InstaBot.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InstaBot.Designer.cs">
       <DependentUpon>InstaBot.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="InstaBot.resx">
+    <EmbeddedResource Include="Forms\ColorProfile.resx">
+      <DependentUpon>ColorProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InstaBot.resx">
       <DependentUpon>InstaBot.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -83,6 +92,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Extensions\Extensions.csproj">
+      <Project>{8A96EE5C-5CBD-4F6E-86FA-374E7F760918}</Project>
+      <Name>Extensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TestDataService\TestDataService.csproj">
       <Project>{9AA98993-260A-417D-ACB9-DB6E547FB99A}</Project>
       <Name>TestDataService</Name>
