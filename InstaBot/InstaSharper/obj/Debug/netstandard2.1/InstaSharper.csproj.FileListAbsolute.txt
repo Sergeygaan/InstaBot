@@ -9,7 +9,6 @@ C:\Users\Sergey\Desktop\Image\InstaSharper-develop\InstaSharper\obj\Debug\netsta
 C:\Users\Sergey\Desktop\InstaBot\InstaBot\InstaSharper\bin\Debug\netstandard2.1\InstaSharper.deps.json
 C:\Users\Sergey\Desktop\InstaBot\InstaBot\InstaSharper\bin\Debug\netstandard2.1\InstaSharper.dll
 C:\Users\Sergey\Desktop\InstaBot\InstaBot\InstaSharper\bin\Debug\netstandard2.1\InstaSharper.pdb
-C:\Users\Sergey\Desktop\InstaBot\InstaBot\InstaSharper\obj\Debug\netstandard2.1\InstaSharper.csprojAssemblyReference.cache
 C:\Users\Sergey\Desktop\InstaBot\InstaBot\InstaSharper\obj\Debug\netstandard2.1\InstaSharper.AssemblyInfoInputs.cache
 C:\Users\Sergey\Desktop\InstaBot\InstaBot\InstaSharper\obj\Debug\netstandard2.1\InstaSharper.AssemblyInfo.cs
 C:\Users\Sergey\Desktop\InstaBot\InstaBot\InstaSharper\obj\Debug\netstandard2.1\InstaSharper.csproj.CoreCompileInputs.cache

@@ -21,9 +21,9 @@ namespace InstaBot
         private void BtnAccountLogin_Click(object sender, EventArgs e)
         {
             // var login = _instagramClient.Login(txtAccountUsername.Text, txtAccountPassword.Text);
-            var login = _instagramClient.Login("sergeygaan1@yandex.ru", "WiffThadd446530024");
+            
             lblAccountLoginStatus.Text = @"Status: Attempting to log in.";
-            if (login.Succeeded)
+            if (login)
             {
                 lblAccountLoginStatus.Text = @"Status: Logged in.";
                 lblAccountLoginStatus.ForeColor = Color.Green;
@@ -42,8 +42,8 @@ namespace InstaBot
             btnAccountLogin.Enabled = false;
             btnAccountLogout.Enabled = true;
 
-            //var userFollowers = _instagramClient.GetUserFollowers();
-            //var userMedia = _instagramClient.GetUserMedia(userFollowers.Value[10].UserName);
+            var userFollowers = _instagramClient.GetUserFollowers();
+            var userMedia = _instagramClient.GetUserMedia(userFollowers.Value[10].UserName);
             //var media = userMedia.Value.First();
             //_instagramClient.UnLikeMedia(media.InstaIdentifier);
             //_instagramClient.LikeMedia(media.InstaIdentifier);

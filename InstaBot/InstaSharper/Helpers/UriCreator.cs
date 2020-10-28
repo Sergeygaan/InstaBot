@@ -555,5 +555,15 @@ namespace InstaSharper.Helpers
                 throw new Exception("Can't create URI for getting share link");
             return instaUri;
         }
+
+        public static Uri GetChallengeRequireFirstUri(string apiPath, string guid, string deviceId)
+        {
+            if (!apiPath.EndsWith("/"))
+                apiPath = apiPath + "/";
+            if (!Uri.TryCreate(BaseInstagramUri, InstaApiConstants.API_SUFFIX + apiPath +
+                $"?guid={guid}&device_id={deviceId}", out var instaUri))
+                throw new Exception("Cant create URI for challenge require url");
+            return instaUri;
+        }
     }
 }

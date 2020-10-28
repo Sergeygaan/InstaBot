@@ -40,6 +40,11 @@ namespace InstaSharper.API
         #endregion
 
         /// <summary>
+        ///     Get challenge require (checkpoint required) options
+        /// </summary>
+        Task<IResult<InstaChallengeRequireVerifyMethod>> GetChallengeRequireVerifyMethodAsync();
+
+        /// <summary>
         ///     Get current state info as Memory stream
         /// </summary>
         /// <returns>State data</returns>

@@ -34,6 +34,7 @@ namespace InstaSharper.API
         public IStoryProcessor _storyProcessor { get; set; }
 
         public TwoFactorLoginInfo _twoFactorInfo { get; set; }
+
         public InstaChallenge _challengeInfo { get; set; }
         public UserSessionData _user { get; set; }
         public IUserProcessor _userProcessor { get; set; }
@@ -1039,7 +1040,7 @@ namespace InstaSharper.API
                         //Challenge is Required!
                         return Result.Fail("Challenge is required", InstaLoginResult.ChallengeRequired);
                     }
-                    
+
                     return Result.UnExpectedResponse<InstaLoginResult>(response, json);
                 }
 
@@ -1243,6 +1244,10 @@ namespace InstaSharper.API
 
                 if (loginFailReason.ErrorType == "sms_code_validation_code_invalid")
                     return Result.Fail("Please check the security code.", InstaLoginTwoFactorResult.InvalidCode);
+                if (loginFailReason.ErrorType == "checkpoint_challenge_required")  
+                {
+                    return Result.Fail("Challenge is required", InstaLoginTwoFactorResult.ChallengeRequired);
+                }
                 return Result.Fail("This code is no longer valid, please, call LoginAsync again to request a new one",
                     InstaLoginTwoFactorResult.CodeExpired);
             }
@@ -1328,6 +1333,32 @@ namespace InstaSharper.API
             _httpRequestProcessor.HttpHandler.CookieContainer = data.Cookies;
             IsUserAuthenticated = data.IsAuthenticated;
             InvalidateProcessors();
+        }
+
+        /// <summary>
+        ///     Get challenge require (checkpoint required) options
+        /// </summary>
+        public async Task<IResult<InstaChallengeRequireVerifyMethod>> GetChallengeRequireVerifyMethodAsync()
+        {
+            if (_challengeInfo == null)
+                return Result.Fail("challenge require info is empty.\r\ntry to call LoginAsync function first.", (InstaChallengeRequireVerifyMethod)null);
+
+            try
+            {
+                var instaUri = UriCreator.GetChallengeRequireFirstUri(_challengeInfo.ApiPath, _deviceInfo.DeviceGuid.ToString(), _deviceInfo.DeviceId);
+                var request = HttpHelper.GetDefaultRequest(HttpMethod.Get, instaUri, _deviceInfo);
+                var response = await _httpRequestProcessor.SendAsync(request);
+                var json = await response.Content.ReadAsStringAsync();
+                if (response.StatusCode != HttpStatusCode.OK)
+                    return Result.UnExpectedResponse<InstaChallengeRequireVerifyMethod>(response, json);
+
+                var obj = JsonConvert.DeserializeObject<InstaChallengeRequireVerifyMethod>(json);
+                return Result.Success(obj);
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail(ex, (InstaChallengeRequireVerifyMethod)null);
+            }
         }
 
         #endregion

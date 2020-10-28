@@ -10,7 +10,6 @@ C:\Users\Sergey\Desktop\Image\InstaSharper-develop\InstaSharper\obj\Debug\net452
 C:\Users\Sergey\Desktop\InstaBot\InstaBot\InstaSharper\bin\Debug\net452\InstaSharper.dll
 C:\Users\Sergey\Desktop\InstaBot\InstaBot\InstaSharper\bin\Debug\net452\InstaSharper.pdb
 C:\Users\Sergey\Desktop\InstaBot\InstaBot\InstaSharper\bin\Debug\net452\Newtonsoft.Json.dll
-C:\Users\Sergey\Desktop\InstaBot\InstaBot\InstaSharper\obj\Debug\net452\InstaSharper.csprojAssemblyReference.cache
 C:\Users\Sergey\Desktop\InstaBot\InstaBot\InstaSharper\obj\Debug\net452\InstaSharper.AssemblyInfoInputs.cache
 C:\Users\Sergey\Desktop\InstaBot\InstaBot\InstaSharper\obj\Debug\net452\InstaSharper.AssemblyInfo.cs
 C:\Users\Sergey\Desktop\InstaBot\InstaBot\InstaSharper\obj\Debug\net452\InstaSharper.csproj.CoreCompileInputs.cache

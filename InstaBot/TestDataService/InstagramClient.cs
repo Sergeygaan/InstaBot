@@ -11,7 +11,7 @@ namespace TestDataService
     {
         #region Login
 
-        public IResult<InstaLoginResult> Login(string userName, string password)
+        public bool Login(string userName, string password)
         {
             if(_instaApi == null)
             {
@@ -21,16 +21,16 @@ namespace TestDataService
             if (!_instaApi.IsUserAuthenticated)
             {
                 var login = AwaitHelper.Waiting(() => _instaApi.LoginAsync());
+                var twoFactor = AwaitHelper.Waiting(() => _instaApi.TwoFactorLoginAsync("427284"));
+                var challengeRequire = AwaitHelper.Waiting(() => _instaApi.GetChallengeRequireVerifyMethodAsync());
 
-                if (login.Succeeded)
+                if (login.Succeeded || challengeRequire.Succeeded)
                 {
                     _instaApi.IsUserAuthenticated = true;
                 }
-
-                return login;
             }
 
-            return null;
+            return _instaApi.IsUserAuthenticated;
         }
 
         public IResult<bool> Logout()
