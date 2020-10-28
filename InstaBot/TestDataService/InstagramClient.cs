@@ -4,6 +4,7 @@ using InstaSharper.API.Builder;
 using InstaSharper.Classes;
 using InstaSharper.Classes.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace TestDataService
 {
@@ -11,33 +12,38 @@ namespace TestDataService
     {
         #region Login
 
-        public bool Login(string userName, string password)
+        public async Task<IResult<InstaLoginResult>> Login(string userName, string password)
         {
-            if(_instaApi == null)
+            if (_instaApi == null)
             {
                 CreateInstaApi(userName, password);
             }
 
             if (!_instaApi.IsUserAuthenticated)
             {
-                var login = AwaitHelper.Waiting(() => _instaApi.LoginAsync());
-                var twoFactor = AwaitHelper.Waiting(() => _instaApi.TwoFactorLoginAsync("427284"));
-                var challengeRequire = AwaitHelper.Waiting(() => _instaApi.GetChallengeRequireVerifyMethodAsync());
+                var login = await  _instaApi.LoginAsync();
 
-                if (login.Succeeded || challengeRequire.Succeeded)
-                {
-                    _instaApi.IsUserAuthenticated = true;
-                }
+                return login;
             }
 
-            return _instaApi.IsUserAuthenticated;
+            return null;
         }
 
-        public IResult<bool> Logout()
+        public async Task<IResult<InstaLoginTwoFactorResult>> TwoFactorLogin(string verificationCode)
+        {
+            return await _instaApi.TwoFactorLoginAsync(verificationCode);
+        }
+
+        public async Task<IResult<InstaChallengeRequireVerifyMethod>> ChallengeRequireVerify()
+        {
+            return await _instaApi.GetChallengeRequireVerifyMethodAsync();
+        }
+
+        public async Task<IResult<bool>> Logout()
         {
             if (_instaApi.IsUserAuthenticated)
             {
-                var logon = AwaitHelper.Waiting(() => _instaApi.LogoutAsync());
+                var logon = await _instaApi.LogoutAsync();
 
                 if (logon.Succeeded)
                 {
@@ -55,6 +61,7 @@ namespace TestDataService
         private void CreateInstaApi(string userName, string password)
         {
             _instaApi = InstaApiBuilder.CreateBuilder()
+               .SetRequestDelay(RequestDelay.FromSeconds(0, 1))
                .SetUser(new UserSessionData
                {
                    UserName = userName,
@@ -67,24 +74,34 @@ namespace TestDataService
 
         #region Users
 
-        public IResult<InstaUserShortList> GetUserFollowers(int maxPagesToLoad = 1)
+        public Task<IResult<InstaUserShortList>> GetUserFollowers(string username)
         {
-            return AwaitHelper.Waiting(() => _instaApi.GetUserFollowersAsync("gaansia", PaginationParameters.MaxPagesToLoad(maxPagesToLoad)));
+            return _instaApi.GetUserFollowersAsync(username, PaginationParameters.Empty);
         }
 
-        public IResult<InstaMediaList> GetUserMedia(string user, int maxPagesToLoad = 1)
+        public Task<IResult<InstaMediaList>> GetUserMedia(string user, int? maxPagesToLoad = 10)
         {
-            return AwaitHelper.Waiting(() => _instaApi.GetUserMediaAsync(user, PaginationParameters.MaxPagesToLoad(maxPagesToLoad)));
+            PaginationParameters paginationParameters;
+            if (maxPagesToLoad.HasValue)
+            {
+                paginationParameters = PaginationParameters.MaxPagesToLoad(maxPagesToLoad.Value);
+            }
+            else
+            {
+                paginationParameters = PaginationParameters.Empty;
+            }
+
+            return _instaApi.GetUserMediaAsync(user, paginationParameters);
         }
 
-        public IResult<bool> LikeMedia(string mediaId)
+        public Task<IResult<bool>> LikeMedia(string mediaId)
         {
-            return AwaitHelper.Waiting(() => _instaApi.LikeMediaAsync(mediaId));
+            return _instaApi.LikeMediaAsync(mediaId);
         }
 
-        public IResult<bool> UnLikeMedia(string mediaId)
+        public Task<IResult<bool>> UnLikeMedia(string mediaId)
         {
-            return AwaitHelper.Waiting(() => _instaApi.UnLikeMediaAsync(mediaId));
+            return _instaApi.UnLikeMediaAsync(mediaId);
         }
 
         #endregion

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using TestDataService;
 
@@ -42,27 +43,26 @@ namespace ColorProfileForm
                 }
                 catch
                 {
-                    DialogResult rezult = MessageBox.Show("Невозможно открыть выбранный файл",
-                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    DialogResult rezult = MessageBox.Show("Невозможно открыть выбранный файл", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
             GetImage(panelImage, _bitmap);
         }
 
-        private void buttonInstagram_Click(object sender, EventArgs e)
+        private async void buttonInstagram_Click(object sender, EventArgs e)
         {
             _bitmap.Clear();
             panelImage.Controls.Clear();
 
-            var userMedia = _instagramClient.GetUserMedia("gaansia");
+            var userMedia = await _instagramClient.GetUserMedia("gaansia");
 
             if (userMedia.Value != null && userMedia.Value.Any())
             {
-                _bitmap.AddRange(DownloadFile.DownloadImage(userMedia.Value));
+                await Task.Run(() => _bitmap.AddRange(DownloadFile.DownloadImage(userMedia.Value)));
             }
 
-            GetImage(panelImage, _bitmap);
+            await Task.Run(() => GetImage(panelImage, _bitmap));
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -124,10 +124,17 @@ namespace ColorProfileForm
                     Image = bitmap[index],
                     SizeMode = PictureBoxSizeMode.StretchImage
                 };
-                panel.Controls.Add(newPictureBox);
+
+                if (panel.InvokeRequired)
+                {
+                    panel.Invoke(new MethodInvoker(delegate { panel.Controls.Add(newPictureBox); }));
+                }
+                else
+                {
+                    panel.Controls.Add(newPictureBox);
+                }
 
                 cols += 1;
-
                 if (cols >= 3)
                 {
                     cols = 0;

@@ -1045,7 +1045,10 @@ namespace InstaSharper.API
                 }
 
                 var loginInfo = JsonConvert.DeserializeObject<InstaLoginResponse>(json);
-                IsUserAuthenticated = loginInfo.User?.UserName.ToLower() == _user.UserName.ToLower();
+                if(loginInfo.Status.ToLower() == "ok")
+                {
+                    IsUserAuthenticated = true;
+                }
                 var converter = ConvertersFabric.Instance.GetUserShortConverter(loginInfo.User);
                 _user.LoggedInUser = converter.Convert();
                 _user.RankToken = $"{_user.LoggedInUser.Pk}_{_httpRequestProcessor.RequestMessage.phone_id}";
