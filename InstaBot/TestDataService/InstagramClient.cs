@@ -79,7 +79,7 @@ namespace TestDataService
             return _instaApi.GetUserFollowersAsync(username, PaginationParameters.Empty);
         }
 
-        public Task<IResult<InstaMediaList>> GetUserMedia(string user, int? maxPagesToLoad = 10)
+        public Task<IResult<InstaMediaList>> GetUserMedia(string user, int? maxPagesToLoad = 3)
         {
             PaginationParameters paginationParameters;
             if (maxPagesToLoad.HasValue)

@@ -18,13 +18,18 @@ namespace ColorProfileForm
         public ColorProfile(InstagramClient instagramClient)
         {
             InitializeComponent();
-            _bitmap = new List<Bitmap>();
+            _bitmapList = new List<Bitmap>();
+            _colorImage = new List<Bitmap>();
+
             _instagramClient = instagramClient;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
-            _bitmap.Clear();
+            await Task.Run(() => BlockElement(false));
+            await Task.Run(() => OutputProgress("Loading"));
+
+            _bitmapList.Clear();
             panelImage.Controls.Clear();
 
             var open_dialog = new OpenFileDialog
@@ -38,7 +43,7 @@ namespace ColorProfileForm
                 {
                     foreach (var fileName in open_dialog.FileNames)
                     {
-                        _bitmap.Add(new Bitmap(fileName));
+                        _bitmapList.Add(new Bitmap(fileName));
                     }
                 }
                 catch
@@ -47,101 +52,220 @@ namespace ColorProfileForm
                 }
             }
 
-            GetImage(panelImage, _bitmap);
+            for(var index = 0; index< _bitmapList.Count; index++)
+            {
+                await Task.Run(() => GetImage(panelImage, _bitmapList[index], index));
+                await Task.Run(() => OutputProgress($"Uploaded {index + 1} of {_bitmapList.Count}"));
+            }
+
+            await Task.Run(() => BlockElement(true));
         }
 
         private async void buttonInstagram_Click(object sender, EventArgs e)
         {
-            _bitmap.Clear();
+            await Task.Run(() => BlockElement(false));
+            await Task.Run(() => OutputProgress("Loading"));
+
+            _bitmapList.Clear();
             panelImage.Controls.Clear();
+            var index = 0;
 
-            var userMedia = await _instagramClient.GetUserMedia("gaansia");
+            var userMediaList = await _instagramClient.GetUserMedia("gaansia");
 
-            if (userMedia.Value != null && userMedia.Value.Any())
+            if (userMediaList.Value != null && userMediaList.Value.Any())
             {
-                await Task.Run(() => _bitmap.AddRange(DownloadFile.DownloadImage(userMedia.Value)));
-            }
-
-            await Task.Run(() => GetImage(panelImage, _bitmap));
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            List<Bitmap> colorImage = new List<Bitmap>();
-            panelColor.Controls.Clear();
-
-            foreach(var image in _bitmap)
-            {
-                int a = 0;
-                int blue = 0;
-                int green = 0;
-                int red = 0;
-
-                int countPixel = 0;
-
-                for(int x = 0; x <image.Width; x++)
+                foreach (var instaMedia in userMediaList.Value)
                 {
-                    for (int y = 0; y < image.Height; y++)
+                    index += 1;
+                    string requestUriString = null;
+
+                    if (instaMedia.Images != null && instaMedia.Images.Any())
                     {
-                        countPixel += 1;
-                        var color = image.GetPixel(x, y);
-                        a += color.A;
-                        blue += color.B;
-                        green += color.G;
-                        red += color.R;
+                        requestUriString = instaMedia.Images.First().URI;
                     }
+                    else if (instaMedia.Carousel != null && instaMedia.Carousel.Any())
+                    {
+                        requestUriString = instaMedia.Carousel.First().Images.First().URI;
+                    }
+
+                    await Task.Run(() => _bitmapList.Add(DownloadFile.DownloadImage(requestUriString)));
+                    await Task.Run(() => GetImage(panelImage, _bitmapList.Last(), _bitmapList.Count - 1));
+                    await Task.Run(() => OutputProgress($"Uploaded {index} of {userMediaList.Value.Count}"));
                 }
-
-                Color myRgbColor = new Color();
-                myRgbColor = Color.FromArgb(red / countPixel, green / countPixel, blue / countPixel);
-
-                Bitmap Bmp = new Bitmap(WIDTH, HEIGHT);
-                using (Graphics gfx = Graphics.FromImage(Bmp))
-                using (SolidBrush brush = new SolidBrush(myRgbColor))
-                {
-                    gfx.FillRectangle(brush, 0, 0, WIDTH, HEIGHT);
-                }
-
-                colorImage.Add(Bmp);
             }
 
-            GetImage(panelColor, colorImage);
-            colorImage.Clear();
+            await Task.Run(() => BlockElement(true));
         }
 
-        public void GetImage(Panel panel, List<Bitmap> bitmap)
+        private async void buttonCalculateColors_Click(object sender, EventArgs e)
         {
-            int cols = 0;
-            int rows = 0;
-            for (int index = 0; index < bitmap.Count; index++)
+            await Task.Run(() => BlockElement(false));
+            await Task.Run(() => OutputProgress("Processed"));
+
+            _colorImage.Clear();
+            panelColor.Controls.Clear();
+            var index = 0;
+
+            foreach (var image in _bitmapList)
             {
-                var newPictureBox = new PictureBox
-                {
-                    Width = WIDTH,
-                    Height = HEIGHT,
-                    Top = rows * (HEIGHT + SPACE),
-                    Left = cols * (WIDTH + SPACE),
-                    Image = bitmap[index],
-                    SizeMode = PictureBoxSizeMode.StretchImage
-                };
+                index += 1;
 
-                if (panel.InvokeRequired)
-                {
-                    panel.Invoke(new MethodInvoker(delegate { panel.Controls.Add(newPictureBox); }));
-                }
-                else
-                {
-                    panel.Controls.Add(newPictureBox);
-                }
+                await Task.Run(() => _colorImage.Add(CalculateColors(image)));
+                await Task.Run(() => GetImage(panelColor, _colorImage.Last(), _colorImage.Count - 1));
+                await Task.Run(() => OutputProgress($"Processed {index} of {_bitmapList.Count}"));
+            }
 
-                cols += 1;
-                if (cols >= 3)
+            await Task.Run(() => BlockElement(true));
+        }
+
+        private Bitmap CalculateColors(Bitmap image)
+        {
+            int countPixel = 0;
+            int a = 0;
+            int blue = 0;
+            int green = 0;
+            int red = 0;
+
+            for (int x = 0; x < image.Width; x++)
+            {
+                for (int y = 0; y < image.Height; y++)
                 {
-                    cols = 0;
-                    rows += 1;
+                    countPixel += 1;
+
+                    var color = image.GetPixel(x, y);
+                    a += color.A;
+                    blue += color.B;
+                    green += color.G;
+                    red += color.R;
                 }
             }
+
+            var myRgbColor = new Color();
+            myRgbColor = Color.FromArgb(red / countPixel, green / countPixel, blue / countPixel);
+
+            var resultBitmap = new Bitmap(WIDTH, HEIGHT);
+            using (var gfx = Graphics.FromImage(resultBitmap))
+            using (var brush = new SolidBrush(myRgbColor))
+            {
+                gfx.FillRectangle(brush, 0, 0, WIDTH, HEIGHT);
+            }
+
+            return resultBitmap;
         }
+
+        public void GetImage(Panel panel, Bitmap bitmap, int bitmapCount)
+        {
+            int cols = bitmapCount % 3;
+            int rows = bitmapCount / 3;
+
+            var newPictureBox = new PictureBox
+            {
+                Width = WIDTH,
+                Height = HEIGHT,
+                Top = rows * (HEIGHT + SPACE),
+                Left = cols * (WIDTH + SPACE),
+                Image = bitmap,
+                SizeMode = PictureBoxSizeMode.StretchImage
+            };
+
+            if (panel.InvokeRequired)
+            {
+                panel.Invoke(new MethodInvoker(delegate { panel.Controls.Add(newPictureBox); }));
+            }
+            else
+            {
+                panel.Controls.Add(newPictureBox);
+            }
+        }
+
+        #region Element
+
+        private void BlockElement(bool flag)
+        {
+            //panelImage
+            if (panelImage.InvokeRequired)
+            {
+                panelImage.Invoke(new MethodInvoker(delegate { panelImage.Enabled = flag; }));
+            }
+            else
+            {
+                panelImage.Enabled = flag;
+            }
+
+            //panelColor
+            if (panelColor.InvokeRequired)
+            {
+                panelColor.Invoke(new MethodInvoker(delegate { panelColor.Enabled = flag; }));
+            }
+            else
+            {
+                panelColor.Enabled = flag;
+            }
+
+            //buttonGetHardDisk
+            if (buttonGetHardDisk.InvokeRequired)
+            {
+                buttonGetHardDisk.Invoke(new MethodInvoker(delegate { buttonGetHardDisk.Enabled = flag; }));
+            }
+            else
+            {
+                buttonGetHardDisk.Enabled = flag;
+            }
+
+            //UserName
+            if (UserName.InvokeRequired)
+            {
+                UserName.Invoke(new MethodInvoker(delegate { UserName.Enabled = flag; }));
+            }
+            else
+            {
+                UserName.Enabled = flag;
+            }
+
+            //numericImage
+            if (numericImage.InvokeRequired)
+            {
+                numericImage.Invoke(new MethodInvoker(delegate { numericImage.Enabled = flag; }));
+            }
+            else
+            {
+                numericImage.Enabled = flag;
+            }
+
+            //buttonGetImage
+            if (buttonGetImage.InvokeRequired)
+            {
+                buttonGetImage.Invoke(new MethodInvoker(delegate { buttonGetImage.Enabled = flag; }));
+            }
+            else
+            {
+                buttonGetImage.Enabled = flag;
+            }
+
+            //buttonCalculateColors
+            if (buttonCalculateColors.InvokeRequired)
+            {
+                buttonCalculateColors.Invoke(new MethodInvoker(delegate { buttonCalculateColors.Enabled = flag; }));
+            }
+            else
+            {
+                buttonCalculateColors.Enabled = flag;
+            }
+        }
+
+        private void OutputProgress(string text)
+        {
+            if (labelProgress.InvokeRequired)
+            {
+                labelProgress.Invoke(new MethodInvoker(delegate { labelProgress.Text = text; }));
+            }
+            else
+            {
+                labelProgress.Text = text;
+            }
+        }
+
+        #endregion
 
         #region Panel
 
@@ -177,8 +301,11 @@ namespace ColorProfileForm
 
         #endregion
 
-        private List<Bitmap> _bitmap;
+        private List<Bitmap> _bitmapList;
+        private List<Bitmap> _colorImage;
 
         private InstagramClient _instagramClient;
+
+        private object _locker = new object();
     }
 }

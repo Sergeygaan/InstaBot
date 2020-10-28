@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonGetHardDisk = new System.Windows.Forms.Button();
             this.panelImage = new System.Windows.Forms.Panel();
             this.panelColor = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
-            this.buttonInstagram = new System.Windows.Forms.Button();
+            this.buttonCalculateColors = new System.Windows.Forms.Button();
+            this.buttonGetImage = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.numericImage = new System.Windows.Forms.NumericUpDown();
@@ -40,21 +40,24 @@
             this.label1 = new System.Windows.Forms.Label();
             this.UserName = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.labelProgress = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericImage)).BeginInit();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button1
+            // buttonGetHardDisk
             // 
-            this.button1.Location = new System.Drawing.Point(9, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(135, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Загрузить картинки";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buttonGetHardDisk.Location = new System.Drawing.Point(9, 19);
+            this.buttonGetHardDisk.Name = "buttonGetHardDisk";
+            this.buttonGetHardDisk.Size = new System.Drawing.Size(135, 23);
+            this.buttonGetHardDisk.TabIndex = 0;
+            this.buttonGetHardDisk.Text = "Get image HardDisk";
+            this.buttonGetHardDisk.UseVisualStyleBackColor = true;
+            this.buttonGetHardDisk.Click += new System.EventHandler(this.button1_Click);
             // 
             // panelImage
             // 
@@ -76,29 +79,29 @@
             this.panelColor.Scroll += new System.Windows.Forms.ScrollEventHandler(this.PanelColor_Scroll);
             this.panelColor.Click += new System.EventHandler(this.panelColor_Click);
             // 
-            // button2
+            // buttonCalculateColors
             // 
-            this.button2.Location = new System.Drawing.Point(9, 19);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(135, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Расчитать цвета";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.buttonCalculateColors.Location = new System.Drawing.Point(9, 19);
+            this.buttonCalculateColors.Name = "buttonCalculateColors";
+            this.buttonCalculateColors.Size = new System.Drawing.Size(135, 23);
+            this.buttonCalculateColors.TabIndex = 3;
+            this.buttonCalculateColors.Text = "Calculate colors";
+            this.buttonCalculateColors.UseVisualStyleBackColor = true;
+            this.buttonCalculateColors.Click += new System.EventHandler(this.buttonCalculateColors_Click);
             // 
-            // buttonInstagram
+            // buttonGetImage
             // 
-            this.buttonInstagram.Location = new System.Drawing.Point(9, 71);
-            this.buttonInstagram.Name = "buttonInstagram";
-            this.buttonInstagram.Size = new System.Drawing.Size(135, 23);
-            this.buttonInstagram.TabIndex = 4;
-            this.buttonInstagram.Text = "Get image";
-            this.buttonInstagram.UseVisualStyleBackColor = true;
-            this.buttonInstagram.Click += new System.EventHandler(this.buttonInstagram_Click);
+            this.buttonGetImage.Location = new System.Drawing.Point(9, 71);
+            this.buttonGetImage.Name = "buttonGetImage";
+            this.buttonGetImage.Size = new System.Drawing.Size(135, 23);
+            this.buttonGetImage.TabIndex = 4;
+            this.buttonGetImage.Text = "Get image";
+            this.buttonGetImage.UseVisualStyleBackColor = true;
+            this.buttonGetImage.Click += new System.EventHandler(this.buttonInstagram_Click);
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.buttonGetHardDisk);
             this.groupBox1.Location = new System.Drawing.Point(1523, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(164, 55);
@@ -112,7 +115,7 @@
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.UserName);
-            this.groupBox2.Controls.Add(this.buttonInstagram);
+            this.groupBox2.Controls.Add(this.buttonGetImage);
             this.groupBox2.Location = new System.Drawing.Point(1523, 73);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(164, 100);
@@ -169,7 +172,7 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.button2);
+            this.groupBox3.Controls.Add(this.buttonCalculateColors);
             this.groupBox3.Location = new System.Drawing.Point(1523, 179);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(164, 55);
@@ -177,11 +180,31 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "ColorProfile";
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.labelProgress);
+            this.groupBox4.Location = new System.Drawing.Point(1523, 240);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(164, 38);
+            this.groupBox4.TabIndex = 8;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Progress";
+            // 
+            // labelProgress
+            // 
+            this.labelProgress.AutoSize = true;
+            this.labelProgress.Location = new System.Drawing.Point(6, 16);
+            this.labelProgress.Name = "labelProgress";
+            this.labelProgress.Size = new System.Drawing.Size(57, 13);
+            this.labelProgress.TabIndex = 0;
+            this.labelProgress.Text = "Processed";
+            // 
             // ColorProfile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1699, 725);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -199,17 +222,19 @@
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericImage)).EndInit();
             this.groupBox3.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonGetHardDisk;
         private System.Windows.Forms.Panel panelImage;
         private System.Windows.Forms.Panel panelColor;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button buttonInstagram;
+        private System.Windows.Forms.Button buttonCalculateColors;
+        private System.Windows.Forms.Button buttonGetImage;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
@@ -217,6 +242,8 @@
         private System.Windows.Forms.TextBox UserName;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown numericImage;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label labelProgress;
     }
 }
 
