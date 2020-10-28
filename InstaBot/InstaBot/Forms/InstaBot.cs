@@ -20,8 +20,9 @@ namespace InstaBot
 
         private void BtnAccountLogin_Click(object sender, EventArgs e)
         {
-            // var login = _instagramClient.Login(txtAccountUsername.Text, txtAccountPassword.Text);
-            
+            //var login = _instagramClient.Login(txtAccountUsername.Text, txtAccountPassword.Text);
+            var login = _instagramClient.Login(Data.Name2, Data.Password2);
+
             lblAccountLoginStatus.Text = @"Status: Attempting to log in.";
             if (login)
             {
