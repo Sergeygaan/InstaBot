@@ -30,6 +30,9 @@
         {
             this.buttonColorProfile = new System.Windows.Forms.Button();
             this.gbAccountSettings = new System.Windows.Forms.GroupBox();
+            this.buttonTwoFactor = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBoxTwoFactor = new System.Windows.Forms.TextBox();
             this.btnAccountLogout = new System.Windows.Forms.Button();
             this.btnAccountLogin = new System.Windows.Forms.Button();
             this.lblAccountLoginStatus = new System.Windows.Forms.Label();
@@ -37,9 +40,7 @@
             this.lblAccountUsername = new System.Windows.Forms.Label();
             this.txtAccountPassword = new System.Windows.Forms.TextBox();
             this.txtAccountUsername = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBoxTwoFactor = new System.Windows.Forms.TextBox();
-            this.buttonTwoFactor = new System.Windows.Forms.Button();
+            this.buttonUserActivity = new System.Windows.Forms.Button();
             this.gbAccountSettings.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,6 +72,34 @@
             this.gbAccountSettings.TabIndex = 3;
             this.gbAccountSettings.TabStop = false;
             this.gbAccountSettings.Text = "Account Settings";
+            // 
+            // buttonTwoFactor
+            // 
+            this.buttonTwoFactor.Enabled = false;
+            this.buttonTwoFactor.Location = new System.Drawing.Point(217, 109);
+            this.buttonTwoFactor.Name = "buttonTwoFactor";
+            this.buttonTwoFactor.Size = new System.Drawing.Size(75, 23);
+            this.buttonTwoFactor.TabIndex = 7;
+            this.buttonTwoFactor.Text = "TwoFactor";
+            this.buttonTwoFactor.UseVisualStyleBackColor = true;
+            this.buttonTwoFactor.Click += new System.EventHandler(this.ButtonTwoFactor_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(14, 95);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(61, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "TwoFactor:";
+            // 
+            // textBoxTwoFactor
+            // 
+            this.textBoxTwoFactor.Enabled = false;
+            this.textBoxTwoFactor.Location = new System.Drawing.Point(17, 111);
+            this.textBoxTwoFactor.Name = "textBoxTwoFactor";
+            this.textBoxTwoFactor.Size = new System.Drawing.Size(194, 20);
+            this.textBoxTwoFactor.TabIndex = 6;
             // 
             // btnAccountLogout
             // 
@@ -134,39 +163,22 @@
             this.txtAccountUsername.Size = new System.Drawing.Size(194, 20);
             this.txtAccountUsername.TabIndex = 0;
             // 
-            // label1
+            // buttonUserActivity
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 95);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(61, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "TwoFactor:";
-            // 
-            // textBoxTwoFactor
-            // 
-            this.textBoxTwoFactor.Enabled = false;
-            this.textBoxTwoFactor.Location = new System.Drawing.Point(17, 111);
-            this.textBoxTwoFactor.Name = "textBoxTwoFactor";
-            this.textBoxTwoFactor.Size = new System.Drawing.Size(194, 20);
-            this.textBoxTwoFactor.TabIndex = 6;
-            // 
-            // buttonTwoFactor
-            // 
-            this.buttonTwoFactor.Enabled = false;
-            this.buttonTwoFactor.Location = new System.Drawing.Point(217, 109);
-            this.buttonTwoFactor.Name = "buttonTwoFactor";
-            this.buttonTwoFactor.Size = new System.Drawing.Size(75, 23);
-            this.buttonTwoFactor.TabIndex = 7;
-            this.buttonTwoFactor.Text = "TwoFactor";
-            this.buttonTwoFactor.UseVisualStyleBackColor = true;
-            this.buttonTwoFactor.Click += new System.EventHandler(this.ButtonTwoFactor_Click);
+            this.buttonUserActivity.Location = new System.Drawing.Point(12, 214);
+            this.buttonUserActivity.Name = "buttonUserActivity";
+            this.buttonUserActivity.Size = new System.Drawing.Size(75, 23);
+            this.buttonUserActivity.TabIndex = 6;
+            this.buttonUserActivity.Text = "UserActivity";
+            this.buttonUserActivity.UseVisualStyleBackColor = true;
+            this.buttonUserActivity.Click += new System.EventHandler(this.buttonUserActivity_Click);
             // 
             // InstaBot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.buttonUserActivity);
             this.Controls.Add(this.buttonColorProfile);
             this.Controls.Add(this.gbAccountSettings);
             this.Name = "InstaBot";
@@ -191,6 +203,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxTwoFactor;
         private System.Windows.Forms.Button buttonTwoFactor;
+        private System.Windows.Forms.Button buttonUserActivity;
     }
 }
 

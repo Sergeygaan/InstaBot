@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TestDataService;
 using InstaBot.ColorProfilesSection;
+using InstaBot.UserActivitySection;
 
 namespace InstaBot
 {
@@ -136,6 +137,18 @@ namespace InstaBot
             using (var colorProfile = new ColorProfile(_instagramClient))
             {
                 colorProfile.ShowDialog();
+            }
+        }
+
+        #endregion
+
+        #region UserActivity
+
+        private void buttonUserActivity_Click(object sender, EventArgs e)
+        {
+            using (var userActivity = new UserActivity(_instagramClient))
+            {
+                userActivity.ShowDialog();
             }
         }
 

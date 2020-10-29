@@ -94,6 +94,11 @@ namespace TestDataService
             return _instaApi.GetUserMediaAsync(user, paginationParameters);
         }
 
+        public Task<IResult<InstaLikersList>> GetMediaLikers(string mediaId)
+        {
+            return _instaApi.GetMediaLikersAsync(mediaId);
+        }
+
         public Task<IResult<bool>> LikeMedia(string mediaId)
         {
             return _instaApi.LikeMediaAsync(mediaId);
