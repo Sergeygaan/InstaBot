@@ -1,11 +1,10 @@
-﻿using ColorProfileForm;
-using InstaSharper.Classes;
+﻿using InstaSharper.Classes;
 using System;
 using System.Drawing;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TestDataService;
+using InstaBot.ColorProfilesSection;
 
 namespace InstaBot
 {

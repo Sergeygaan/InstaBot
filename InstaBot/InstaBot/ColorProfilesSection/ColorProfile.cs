@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TestDataService;
 
-namespace ColorProfileForm
+namespace InstaBot.ColorProfilesSection
 {
     public partial class ColorProfile : Form
     {
@@ -26,10 +27,13 @@ namespace ColorProfileForm
 
         private async void button1_Click(object sender, EventArgs e)
         {
+            AutoScrollPositionDefault();
+
             await Task.Run(() => BlockElement(false));
             await Task.Run(() => OutputProgress("Loading"));
 
             _bitmapList.Clear();
+            _colorImage.Clear();
             panelImage.Controls.Clear();
 
             var open_dialog = new OpenFileDialog
@@ -54,23 +58,28 @@ namespace ColorProfileForm
 
             for(var index = 0; index< _bitmapList.Count; index++)
             {
-                await Task.Run(() => GetImage(panelImage, _bitmapList[index], index));
+                await Task.Run(() => GetImage(panelImage, _bitmapList[index], index, 0));
                 await Task.Run(() => OutputProgress($"Uploaded {index + 1} of {_bitmapList.Count}"));
             }
 
             await Task.Run(() => BlockElement(true));
+
+            CalculateColors();
         }
 
         private async void buttonInstagram_Click(object sender, EventArgs e)
         {
+            AutoScrollPositionDefault();
+
             await Task.Run(() => BlockElement(false));
             await Task.Run(() => OutputProgress("Loading"));
 
             _bitmapList.Clear();
+            _colorImage.Clear();
             panelImage.Controls.Clear();
             var index = 0;
 
-            var userMediaList = await _instagramClient.GetUserMedia("gaansia");
+            var userMediaList = await _instagramClient.GetUserMedia(UserName.Text, (int)numericImage.Value / 18);
 
             if (userMediaList.Value != null && userMediaList.Value.Any())
             {
@@ -89,21 +98,23 @@ namespace ColorProfileForm
                     }
 
                     await Task.Run(() => _bitmapList.Add(DownloadFile.DownloadImage(requestUriString)));
-                    await Task.Run(() => GetImage(panelImage, _bitmapList.Last(), _bitmapList.Count - 1));
+                    await Task.Run(() => GetImage(panelImage, _bitmapList.Last(), _bitmapList.Count - 1, 0));
                     await Task.Run(() => OutputProgress($"Uploaded {index} of {userMediaList.Value.Count}"));
                 }
             }
 
             await Task.Run(() => BlockElement(true));
+
+            CalculateColors();
         }
 
-        private async void buttonCalculateColors_Click(object sender, EventArgs e)
+        private async void CalculateColors()
         {
+            AutoScrollPositionDefault();
+
             await Task.Run(() => BlockElement(false));
             await Task.Run(() => OutputProgress("Processed"));
 
-            _colorImage.Clear();
-            panelColor.Controls.Clear();
             var index = 0;
 
             foreach (var image in _bitmapList)
@@ -111,11 +122,36 @@ namespace ColorProfileForm
                 index += 1;
 
                 await Task.Run(() => _colorImage.Add(CalculateColors(image)));
-                await Task.Run(() => GetImage(panelColor, _colorImage.Last(), _colorImage.Count - 1));
+                await Task.Run(() => GetImage(panelImage, _colorImage.Last(), _colorImage.Count - 1, 750));
                 await Task.Run(() => OutputProgress($"Processed {index} of {_bitmapList.Count}"));
             }
 
             await Task.Run(() => BlockElement(true));
+        }
+
+        private void ButtonExportImage_Click(object sender, EventArgs e)
+        {
+            AutoScrollPositionDefault();
+
+            var saveDialog = new SaveFileDialog
+            {
+                Filter = "Image Files(.png)|*.png|All files (*.*)|*.*",
+                FileName = "ColorProfile_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".png"
+            };
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                panelImage.AutoSize = true;
+                panelImage.Refresh();
+
+                using (Bitmap bmp = new Bitmap(panelImage.Width, panelImage.Height))
+                {
+                    panelImage.DrawToBitmap(bmp, new Rectangle(Point.Empty, bmp.Size));
+                    bmp.Save(saveDialog.FileName, ImageFormat.Png);
+                }
+
+                panelImage.AutoSize = false;
+                panelImage.Refresh();
+            }
         }
 
         private Bitmap CalculateColors(Bitmap image)
@@ -153,7 +189,7 @@ namespace ColorProfileForm
             return resultBitmap;
         }
 
-        public void GetImage(Panel panel, Bitmap bitmap, int bitmapCount)
+        public void GetImage(Panel panel, Bitmap bitmap, int bitmapCount, int bias)
         {
             int cols = bitmapCount % 3;
             int rows = bitmapCount / 3;
@@ -163,7 +199,7 @@ namespace ColorProfileForm
                 Width = WIDTH,
                 Height = HEIGHT,
                 Top = rows * (HEIGHT + SPACE),
-                Left = cols * (WIDTH + SPACE),
+                Left = cols * (WIDTH + SPACE) + bias,
                 Image = bitmap,
                 SizeMode = PictureBoxSizeMode.StretchImage
             };
@@ -190,16 +226,6 @@ namespace ColorProfileForm
             else
             {
                 panelImage.Enabled = flag;
-            }
-
-            //panelColor
-            if (panelColor.InvokeRequired)
-            {
-                panelColor.Invoke(new MethodInvoker(delegate { panelColor.Enabled = flag; }));
-            }
-            else
-            {
-                panelColor.Enabled = flag;
             }
 
             //buttonGetHardDisk
@@ -242,14 +268,14 @@ namespace ColorProfileForm
                 buttonGetImage.Enabled = flag;
             }
 
-            //buttonCalculateColors
-            if (buttonCalculateColors.InvokeRequired)
+            //ButtonExportImage
+            if (buttonExportImage.InvokeRequired)
             {
-                buttonCalculateColors.Invoke(new MethodInvoker(delegate { buttonCalculateColors.Enabled = flag; }));
+                buttonExportImage.Invoke(new MethodInvoker(delegate { buttonExportImage.Enabled = flag; }));
             }
             else
             {
-                buttonCalculateColors.Enabled = flag;
+                buttonExportImage.Enabled = flag;
             }
         }
 
@@ -277,26 +303,15 @@ namespace ColorProfileForm
             }
         }
 
-        private void panelColor_Click(object sender, EventArgs e)
-        {
-            if (!panelColor.Focused)
-            {
-                panelColor.Focus();
-            }
-        }
-
         private void PanelImage_Scroll(object sender, ScrollEventArgs e)
         {
             var scroll = e.OldValue - e.NewValue;
-            panelColor.AutoScrollPosition = new Point(panelImage.HorizontalScroll.Value, panelImage.VerticalScroll.Value - scroll);
             panelImage.AutoScrollPosition = new Point(panelImage.HorizontalScroll.Value, panelImage.VerticalScroll.Value - scroll);
         }
 
-        private void PanelColor_Scroll(object sender, ScrollEventArgs e)
+        private void AutoScrollPositionDefault()
         {
-            var scroll = e.OldValue - e.NewValue;
-            panelImage.AutoScrollPosition = new Point(panelColor.HorizontalScroll.Value, panelColor.VerticalScroll.Value - scroll);
-            panelColor.AutoScrollPosition = new Point(panelColor.HorizontalScroll.Value, panelColor.VerticalScroll.Value - scroll);
+            panelImage.AutoScrollPosition = new Point(0, 0);
         }
 
         #endregion
@@ -305,7 +320,5 @@ namespace ColorProfileForm
         private List<Bitmap> _colorImage;
 
         private InstagramClient _instagramClient;
-
-        private object _locker = new object();
     }
 }

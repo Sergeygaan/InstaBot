@@ -47,10 +47,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data.cs" />
-    <Compile Include="Forms\ColorProfile.cs">
+    <Compile Include="ColorProfilesSection\ColorProfile.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ColorProfile.Designer.cs">
+    <Compile Include="ColorProfilesSection\ColorProfile.Designer.cs">
       <DependentUpon>ColorProfile.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\InstaBot.cs">
@@ -61,7 +61,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Forms\ColorProfile.resx">
+    <EmbeddedResource Include="ColorProfilesSection\ColorProfile.resx">
       <DependentUpon>ColorProfile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InstaBot.resx">
