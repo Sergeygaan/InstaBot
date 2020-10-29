@@ -37,6 +37,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,15 +47,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\UserActivitySection\InstagramUserActivity.cs" />
+    <Compile Include="Data\UserActivitySection\InstagramUser.cs" />
     <Compile Include="Data\UserActivitySection\MediaLiker.cs" />
+    <Compile Include="Extensions\AwaitHelper.cs" />
+    <Compile Include="Extensions\DownloadFile.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="InstagramClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Extensions\Extensions.csproj">
-      <Project>{8A96EE5C-5CBD-4F6E-86FA-374E7F760918}</Project>
-      <Name>Extensions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InstaSharper\InstaSharper.csproj">
       <Project>{C7A2FDD0-E39E-4B27-AF11-4208FC1D574A}</Project>
       <Name>InstaSharper</Name>

@@ -99,10 +99,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Extensions\Extensions.csproj">
-      <Project>{8A96EE5C-5CBD-4F6E-86FA-374E7F760918}</Project>
-      <Name>Extensions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\InstaSharper\InstaSharper.csproj">
       <Project>{C7A2FDD0-E39E-4B27-AF11-4208FC1D574A}</Project>
       <Name>InstaSharper</Name>
