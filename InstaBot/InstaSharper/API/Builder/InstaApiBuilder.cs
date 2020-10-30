@@ -36,7 +36,7 @@ namespace InstaSharper.API.Builder
 
             if (_requestMessage == null)
             {
-                _device = AndroidDeviceGenerator.GetRandomAndroidDevice();
+                _device = AndroidDeviceGenerator.GetAndroidDevice();
                 _requestMessage = new ApiRequestMessage
                 {
                     phone_id = _device.PhoneGuid.ToString(),
@@ -52,11 +52,10 @@ namespace InstaSharper.API.Builder
 
             if (_device == null && !string.IsNullOrEmpty(_requestMessage.device_id))
                 _device = AndroidDeviceGenerator.GetById(_requestMessage.device_id);
-            if (_device == null) AndroidDeviceGenerator.GetRandomAndroidDevice();
+            if (_device == null) AndroidDeviceGenerator.GetAndroidDevice();
 
             if (_httpRequestProcessor == null)
-                _httpRequestProcessor =
-                    new HttpRequestProcessor(_delay, _httpClient, _httpHandler, _requestMessage, _logger);
+                _httpRequestProcessor = new HttpRequestProcessor(_delay, _httpClient, _httpHandler, _requestMessage, _logger);
 
             var instaApi = new InstaApi(_user, _logger, _device, _httpRequestProcessor);
             return instaApi;

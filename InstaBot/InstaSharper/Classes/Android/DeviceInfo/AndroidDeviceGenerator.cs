@@ -419,6 +419,11 @@ namespace InstaSharper.Classes.Android.DeviceInfo
                 }
             };
 
+        public static AndroidDevice GetAndroidDevice(int index = 1)
+        {
+            return AndroidAndroidDeviceSets[DevicesNames[index]];
+        }
+
         public static AndroidDevice GetRandomAndroidDevice()
         {
             var random = new Random(DateTime.Now.Millisecond);

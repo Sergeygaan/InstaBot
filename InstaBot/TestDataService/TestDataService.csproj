@@ -47,12 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\UserActivitySection\InstagramUserActivity.cs" />
     <Compile Include="Data\UserActivitySection\InstagramUser.cs" />
     <Compile Include="Data\UserActivitySection\MediaLiker.cs" />
     <Compile Include="Extensions\AwaitHelper.cs" />
     <Compile Include="Extensions\DownloadFile.cs" />
-    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Extensions\UnixTimestamp.cs" />
     <Compile Include="InstagramClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

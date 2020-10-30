@@ -99,6 +99,16 @@ namespace TestDataService
             return _instaApi.GetMediaLikersAsync(mediaId);
         }
 
+        public Task<IResult<InstaUser>> GetUserByName(string username)
+        {
+            return _instaApi.GetUserAsync(username);
+        }
+
+        public Task<IResult<InstaUserInfo>> GetUserInfoById(long pk)
+        {
+            return _instaApi.GetUserInfoByIdAsync(pk);
+        }
+
         public Task<IResult<bool>> LikeMedia(string mediaId)
         {
             return _instaApi.LikeMediaAsync(mediaId);
@@ -116,6 +126,6 @@ namespace TestDataService
             Logout();
         }
 
-        private static IInstaApi _instaApi;
+        public static IInstaApi _instaApi;
     }
 }

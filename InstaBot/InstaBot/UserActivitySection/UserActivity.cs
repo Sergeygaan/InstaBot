@@ -43,7 +43,7 @@ namespace InstaBot.UserActivitySection
 
             if (result)
             {
-                await Task.Run(() => UserAnalysis());
+                var result1 = await UserAnalysis();
             }
             else
             {
@@ -53,9 +53,6 @@ namespace InstaBot.UserActivitySection
 
         private async Task<bool> GetDataInstagram()
         {
-            var userFollowers = await _instagramClient.GetUserFollowers("gaansia");
-            _userFollowersList.AddRange(userFollowers.Value);
-
             var userMediaList = await _instagramClient.GetUserMedia("gaansia", (int)numericImage.Value / 18);
 
             foreach (var media in userMediaList.Value)
@@ -80,34 +77,57 @@ namespace InstaBot.UserActivitySection
                 _mediaLikerList.Add(mediaLiker);
             }
 
+            var userFollowers = await _instagramClient.GetUserFollowers("gaansia");
+            _userFollowersList.AddRange(userFollowers.Value);
+
             return _userFollowersList.Count != 0 && _mediaLikerList.Count != 0;
         }
 
-        private void UserAnalysis()
+        private async Task<bool> UserAnalysis()
         {
-            foreach(var mediaLiker in _mediaLikerList)
+            List<InstagramUser> notActiveFollowersList = new List<InstagramUser>();
+
+            foreach (var mediaLiker in _mediaLikerList)
             {
                 foreach (var instaLikers in mediaLiker.InstaLikersList)
                 {
                     var user = _userFollowersList.Find(item => item.UserName == instaLikers.UserName);
 
-                    if(user != null)
+                    if (user != null)
                     {
-                        _activeFollowersUsersList.Add(new InstagramUser
-                        {
-                            UserName = user.UserName,
-                            ProfilePicture = user.ProfilePicture,
-                        });
                         // добавляем в список  активных
+                        var activeFollowersUser = _activeFollowersUsersList.Find(_ => _.UserName == user.UserName);
+                        if (activeFollowersUser == null)
+                        {
+                            _activeFollowersUsersList.Add(new InstagramUser
+                            {
+                                UserName = user.UserName,
+                                InstaUserShort = user,
+                                NumberLikes = 1
+                            });
+                        }
+                        else
+                        {
+                            activeFollowersUser.NumberLikes += 1;
+                        }
                     }
                     else
                     {
-                        _activeNotFollowersUsersList.Add(new InstagramUser
-                        {
-                            UserName = instaLikers.UserName,
-                            ProfilePicture = instaLikers.ProfilePicture,
-                        });
                         // список активных не подписчиков
+                        var activeNotFollowersUser = _activeNotFollowersUsersList.Find(_ => _.UserName == instaLikers.UserName);
+                        if (activeNotFollowersUser == null)
+                        {
+                            _activeNotFollowersUsersList.Add(new InstagramUser
+                            {
+                                UserName = instaLikers.UserName,
+                                InstaUserShort = instaLikers,
+                                NumberLikes = 1
+                            });
+                        }
+                        else
+                        {
+                            activeNotFollowersUser.NumberLikes += 1;
+                        }
                     }
 
                     // взять список всех и удалить из него список активных подписанных
@@ -117,8 +137,111 @@ namespace InstaBot.UserActivitySection
                 }
             }
 
-            var g = _activeFollowersUsersList.CountingDuplicates();
-            var g1 = _activeNotFollowersUsersList.CountingDuplicates();
+            foreach (var userFollower in _userFollowersList)
+            {
+                var userOnTheList = _activeFollowersUsersList.Find(item => item.UserName == userFollower.UserName);
+
+                if(userOnTheList == null)
+                {
+                    notActiveFollowersList.Add(new InstagramUser
+                    {
+                        UserName = userFollower.UserName,
+                        InstaUserShort = userFollower
+                    });
+                }
+            }
+
+            foreach (var notActiveFollowers in notActiveFollowersList)
+            {
+                var user = await _instagramClient.GetUserInfoById(notActiveFollowers.InstaUserShort.Pk);
+
+                var instaUser = user.Value;
+
+                // Проверка  подписок
+                if (instaUser.FollowingCount > 1000 || instaUser.MediaCount < 5)
+                {
+                    _notActiveBotFollowersUsersList.Add(new InstagramUser
+                    {
+                        UserName = instaUser.Username,
+                        InstaUserInfo = instaUser
+                    });
+
+                    continue;
+                }
+
+                var userMediaList = await _instagramClient.GetUserMedia(instaUser.Username, 1);
+                var instaMediaForInstaUser = userMediaList?.Value?.First();
+
+                if (instaMediaForInstaUser != null)
+                {
+                    // Проверка времени последней публикации
+                    if (instaMediaForInstaUser.TakenAt < DateTime.Now.AddDays(180))
+                    {
+                        _notActiveBotFollowersUsersList.Add(new InstagramUser
+                        {
+                            UserName = instaUser.Username,
+                            InstaUserInfo = instaUser
+                        });
+
+                        continue;
+                    }
+                }
+
+                _notActiveFollowersUsersList.Add(new InstagramUser
+                {
+                    UserName = instaUser.Username,
+                    InstaUserInfo = instaUser
+                });
+            }
+            // await Task.Run(() => CheckBotUser(notActiveFollowersList));
+
+            return true;
+        }
+
+        private async void CheckBotUser(List<InstagramUser> notActiveFollowersList)
+        {
+            foreach (var notActiveFollowers in notActiveFollowersList)
+            {
+                var user = await _instagramClient.GetUserInfoById(notActiveFollowers.InstaUserShort.Pk);
+
+                var instaUser = user.Value;
+
+                // Проверка  подписок
+                if (instaUser.FollowingCount > 1000)
+                {
+                    _notActiveBotFollowersUsersList.Add(new InstagramUser
+                    {
+                        UserName = instaUser.Username,
+                        InstaUserInfo = instaUser
+                    });
+
+                    break;
+                }
+
+                var userMediaList = await _instagramClient.GetUserMedia(instaUser.Username, 1);
+                var instaMediaForInstaUser = userMediaList?.Value?.First();
+
+                if (instaMediaForInstaUser != null)
+                {
+                    // Проверка времени последней публикации
+                    if (instaMediaForInstaUser.TakenAt < DateTime.Now.AddDays(180))
+                    {
+                        _notActiveBotFollowersUsersList.Add(new InstagramUser
+                        {
+                            UserName = instaUser.Username,
+                            InstaUserInfo = instaUser
+                        });
+
+                        break;
+                    }
+                }
+
+                _notActiveFollowersUsersList.Add(new InstagramUser
+                {
+                    UserName = instaUser.Username,
+                    InstaUserInfo = instaUser
+                });
+            }
         }
 
         private List<MediaLiker> _mediaLikerList;
