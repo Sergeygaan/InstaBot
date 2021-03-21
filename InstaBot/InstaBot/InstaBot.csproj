@@ -33,6 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Json.Net, Version=1.0.25.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Json.Net.1.0.25\lib\netstandard2.0\Json.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,6 +52,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bot\BotForLikes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Bot\BotForLikes.Designer.cs">
+      <DependentUpon>BotForLikes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Data.cs" />
     <Compile Include="ColorProfilesSection\ColorProfile.cs">
       <SubType>Form</SubType>
@@ -67,6 +79,9 @@
     <Compile Include="UserActivitySection\UserActivity.Designer.cs">
       <DependentUpon>UserActivity.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Bot\BotForLikes.resx">
+      <DependentUpon>BotForLikes.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ColorProfilesSection\ColorProfile.resx">
       <DependentUpon>ColorProfile.cs</DependentUpon>
     </EmbeddedResource>
@@ -85,6 +100,7 @@
     <EmbeddedResource Include="UserActivitySection\UserActivity.resx">
       <DependentUpon>UserActivity.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -108,5 +124,6 @@
       <Name>TestDataService</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

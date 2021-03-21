@@ -41,6 +41,7 @@
             this.txtAccountPassword = new System.Windows.Forms.TextBox();
             this.txtAccountUsername = new System.Windows.Forms.TextBox();
             this.buttonUserActivity = new System.Windows.Forms.Button();
+            this.BotForLikesButton = new System.Windows.Forms.Button();
             this.gbAccountSettings.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -173,11 +174,22 @@
             this.buttonUserActivity.UseVisualStyleBackColor = true;
             this.buttonUserActivity.Click += new System.EventHandler(this.buttonUserActivity_Click);
             // 
+            // BotForLikesButton
+            // 
+            this.BotForLikesButton.Location = new System.Drawing.Point(12, 243);
+            this.BotForLikesButton.Name = "BotForLikesButton";
+            this.BotForLikesButton.Size = new System.Drawing.Size(75, 23);
+            this.BotForLikesButton.TabIndex = 7;
+            this.BotForLikesButton.Text = "BotForLikes";
+            this.BotForLikesButton.UseVisualStyleBackColor = true;
+            this.BotForLikesButton.Click += new System.EventHandler(this.BotForLikesButton_Click);
+            // 
             // InstaBot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.BotForLikesButton);
             this.Controls.Add(this.buttonUserActivity);
             this.Controls.Add(this.buttonColorProfile);
             this.Controls.Add(this.gbAccountSettings);
@@ -204,6 +216,7 @@
         private System.Windows.Forms.TextBox textBoxTwoFactor;
         private System.Windows.Forms.Button buttonTwoFactor;
         private System.Windows.Forms.Button buttonUserActivity;
+        private System.Windows.Forms.Button BotForLikesButton;
     }
 }
 

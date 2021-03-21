@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace InstaSharper.Classes.Models
 {
+    [Serializable]
     public class InstaUserInfo
     {
         public long Pk { get; set; }
@@ -45,8 +47,11 @@ namespace InstaSharper.Classes.Models
         public List<long> ProfileContextMutualFollowIds { get; set; }
 
         public bool IsBusiness { get; set; }
+
         public bool IncludeDirectBlacklistStatus { get; set; }
+
         public bool HasUnseenBestiesMedia { get; set; }
+
         public bool AutoExpandChaining { get; set; }
     }
 }

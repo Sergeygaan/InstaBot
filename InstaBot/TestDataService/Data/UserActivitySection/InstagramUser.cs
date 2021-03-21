@@ -1,7 +1,9 @@
 ﻿using InstaSharper.Classes.Models;
+using System;
 
 namespace TestDataService.Data.UserActivitySection
 {
+    [Serializable]
     public class InstagramUser
     {
         public string UserName { get; set; }
