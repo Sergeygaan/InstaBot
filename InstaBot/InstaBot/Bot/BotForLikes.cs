@@ -63,6 +63,7 @@ namespace InstaBot.Bot
 
         private async void SetLikes()
         {
+            File.Delete(Directory.GetCurrentDirectory() + $"/{_fileName}");
             if (LogListBox.InvokeRequired)
             {
                 LogListBox.Invoke(new MethodInvoker(delegate { LogListBox.Items.Clear(); }));
@@ -72,11 +73,14 @@ namespace InstaBot.Bot
                 LogListBox.Items.Clear();
             }
 
+            GetTextLog($"Начало");
+            ButtonControl(false);
+
             var resultsList = _usersList.OrderByDescending(u => u.NumberLikes).ToList();
 
             foreach (var instagramUser in resultsList)
             {
-                Thread.Sleep(_rand.Next(1000, 5000));
+                Thread.Sleep(_rand.Next(25000, 45000));
 
                 var userMediaList = await _instagramClient.GetUserMedia(instagramUser.UserName, 1);
                 var instaMediaForInstaUser = userMediaList?.Value;
@@ -85,13 +89,13 @@ namespace InstaBot.Bot
                 {
                     foreach (var currentMedia in instaMediaForInstaUser.ToList().Take(3))
                     {
-                        Thread.Sleep(_rand.Next(1000, 15000));
+                        Thread.Sleep(_rand.Next(60000, 90000));
 
                         var likeMedia = _instagramClient.LikeMedia(currentMedia.InstaIdentifier).Result.Value;
 
                         if (likeMedia)
                         {
-                            GetTextLog($"Поставили лайк записи {currentMedia.Code} пользователю: {instagramUser.UserName}");
+                            GetTextLog($"Запись: https://www.instagram.com/p/{currentMedia.Code} Пользователь = {instagramUser.UserName}");
                         }
                     }
                 }
@@ -100,6 +104,9 @@ namespace InstaBot.Bot
                     GetTextLog($"У пользователя {instagramUser.UserName} нет публикаций");
                 }
             }
+
+            GetTextLog($"Конец");
+            ButtonControl(true);
         }
 
         private void GetTextLog(string text)
@@ -112,12 +119,41 @@ namespace InstaBot.Bot
             {
                 LogListBox.Items.Add(text);
             }
+
+            using (var file = new StreamWriter(Directory.GetCurrentDirectory() + $"/{_fileName}", true))
+            {
+                file.WriteLine(DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ": " + text);
+            }
         }
+
+        private void ButtonControl(bool flag)
+        {
+            if (StartButton.InvokeRequired)
+            {
+                StartButton.Invoke(new MethodInvoker(delegate { StartButton.Enabled = flag; }));
+            }
+            else
+            {
+                StartButton.Enabled = flag;
+            }
+
+            if (LoadActiveFollowersButton.InvokeRequired)
+            {
+                LoadActiveFollowersButton.Invoke(new MethodInvoker(delegate { LoadActiveFollowersButton.Enabled = flag; }));
+            }
+            else
+            {
+                LoadActiveFollowersButton.Enabled = flag;
+            }
+        }
+
 
         private InstagramClient _instagramClient;
 
         private List<InstagramUser> _usersList;
 
         private readonly Random _rand;
+
+        private readonly string _fileName = "LogFile.txt";
     }
 }
