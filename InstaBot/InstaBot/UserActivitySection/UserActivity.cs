@@ -31,28 +31,41 @@ namespace InstaBot.UserActivitySection
 
         private async void ButtonStartAnalysis_Click(object sender, System.EventArgs e)
         {
-            ActiveFollowersUserslistBox.Items.Clear();
-            ActiveNotFollowersUsersListBox.Items.Clear();
-
-            _mediaLikerList.Clear();
-            _userFollowersList.Clear();
-            _activeFollowersUsersList.Clear();
-            _activeNotFollowersUsersList.Clear();
-            _notActiveFollowersUsersList.Clear();
-            _notActiveBotFollowersUsersList.Clear();
-
-            var result = await GetDataInstagram();
-
-            if (result)
+            if(UserName.Text == string.Empty)
             {
-                var result1 = await UserAnalysis();
-
-                GetItemListBox(ActiveFollowersUserslistBox, _activeFollowersUsersList);
-                GetItemListBox(ActiveNotFollowersUsersListBox, _activeNotFollowersUsersList);
+                MessageBox.Show("Не задан параметр 'User'");
+                return;
             }
-            else
+
+            try
             {
-                // ошибка
+                ActiveFollowersUserslistBox.Items.Clear();
+                ActiveNotFollowersUsersListBox.Items.Clear();
+
+                _mediaLikerList.Clear();
+                _userFollowersList.Clear();
+                _activeFollowersUsersList.Clear();
+                _activeNotFollowersUsersList.Clear();
+                _notActiveFollowersUsersList.Clear();
+                _notActiveBotFollowersUsersList.Clear();
+
+                var result = await GetDataInstagram();
+
+                if (result)
+                {
+                    var result1 = await UserAnalysis();
+
+                    GetItemListBox(ActiveFollowersUserslistBox, _activeFollowersUsersList);
+                    GetItemListBox(ActiveNotFollowersUsersListBox, _activeNotFollowersUsersList);
+                }
+                else
+                {
+                    // ошибка
+                }
+            }
+            catch(Exception exception)
+            {
+                MessageBox.Show(exception.Message);
             }
         }
 
@@ -82,7 +95,7 @@ namespace InstaBot.UserActivitySection
                 _mediaLikerList.Add(mediaLiker);
             }
 
-            var userFollowers = await _instagramClient.GetUserFollowers("gaansia");
+            var userFollowers = await _instagramClient.GetUserFollowers(UserName.Text);
             _userFollowersList.AddRange(userFollowers.Value);
 
             return _userFollowersList.Count != 0 && _mediaLikerList.Count != 0;

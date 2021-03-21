@@ -58,7 +58,14 @@ namespace InstaBot.Bot
 
         private async void StartButton_Click(object sender, EventArgs e)
         {
-            await Task.Run(() => SetLikes());
+            try
+            {
+                await Task.Run(() => SetLikes());
+            }
+            catch(Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
         }
 
         private async void SetLikes()
