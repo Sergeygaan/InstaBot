@@ -15,5 +15,7 @@ namespace TestDataService.Data.UserActivitySection
         public int NumberLikes { get; set; }
 
         public int NumberComments { get; set; }
+
+        public bool LikeSet { get; set; } = false;
     }
 }

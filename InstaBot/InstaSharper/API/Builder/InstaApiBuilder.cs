@@ -36,14 +36,15 @@ namespace InstaSharper.API.Builder
 
             if (_requestMessage == null)
             {
-                _device = AndroidDeviceGenerator.GetAndroidDevice();
+                _device = AndroidDeviceGenerator.GetGALAXYTABDevice();
                 _requestMessage = new ApiRequestMessage
                 {
                     phone_id = _device.PhoneGuid.ToString(),
                     guid = _device.DeviceGuid,
                     password = _user?.Password,
                     username = _user?.UserName,
-                    device_id = ApiRequestMessage.GenerateDeviceId()
+                    device_id = _device.DeviceId
+                    // device_id = ApiRequestMessage.GenerateDeviceId()
                 };
             }
 

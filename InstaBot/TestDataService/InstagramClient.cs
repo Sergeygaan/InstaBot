@@ -61,7 +61,7 @@ namespace TestDataService
         private void CreateInstaApi(string userName, string password)
         {
             _instaApi = InstaApiBuilder.CreateBuilder()
-               .SetRequestDelay(RequestDelay.FromSeconds(0, 1))
+               .SetRequestDelay(RequestDelay.FromSeconds(1, 2))
                .SetUser(new UserSessionData
                {
                    UserName = userName,

@@ -34,22 +34,26 @@
             this.ActiveFollowersUserslistBox = new System.Windows.Forms.ListBox();
             this.StartButton = new System.Windows.Forms.Button();
             this.LogListBox = new System.Windows.Forms.ListBox();
+            this.labelActiveFollowers = new System.Windows.Forms.Label();
+            this.SaveActiveFollowersButton = new System.Windows.Forms.Button();
+            this.labelNumberLikePlaced = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.SaveActiveFollowersButton);
             this.groupBox1.Controls.Add(this.LoadActiveFollowersButton);
             this.groupBox1.Location = new System.Drawing.Point(12, 307);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(155, 52);
+            this.groupBox1.Size = new System.Drawing.Size(332, 52);
             this.groupBox1.TabIndex = 19;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Active followers users";
             // 
             // LoadActiveFollowersButton
             // 
-            this.LoadActiveFollowersButton.Location = new System.Drawing.Point(7, 19);
+            this.LoadActiveFollowersButton.Location = new System.Drawing.Point(185, 19);
             this.LoadActiveFollowersButton.Name = "LoadActiveFollowersButton";
             this.LoadActiveFollowersButton.Size = new System.Drawing.Size(141, 23);
             this.LoadActiveFollowersButton.TabIndex = 11;
@@ -92,11 +96,41 @@
             this.LogListBox.Size = new System.Drawing.Size(529, 277);
             this.LogListBox.TabIndex = 20;
             // 
+            // labelActiveFollowers
+            // 
+            this.labelActiveFollowers.AutoSize = true;
+            this.labelActiveFollowers.Location = new System.Drawing.Point(233, 8);
+            this.labelActiveFollowers.Name = "labelActiveFollowers";
+            this.labelActiveFollowers.Size = new System.Drawing.Size(47, 13);
+            this.labelActiveFollowers.TabIndex = 21;
+            this.labelActiveFollowers.Text = "Count: 0";
+            // 
+            // SaveActiveFollowersButton
+            // 
+            this.SaveActiveFollowersButton.Location = new System.Drawing.Point(6, 19);
+            this.SaveActiveFollowersButton.Name = "SaveActiveFollowersButton";
+            this.SaveActiveFollowersButton.Size = new System.Drawing.Size(141, 23);
+            this.SaveActiveFollowersButton.TabIndex = 12;
+            this.SaveActiveFollowersButton.Text = "Save active followers";
+            this.SaveActiveFollowersButton.UseVisualStyleBackColor = true;
+            this.SaveActiveFollowersButton.Click += new System.EventHandler(this.SaveActiveFollowersButton_Click);
+            // 
+            // labelNumberLikePlaced
+            // 
+            this.labelNumberLikePlaced.AutoSize = true;
+            this.labelNumberLikePlaced.Location = new System.Drawing.Point(854, 8);
+            this.labelNumberLikePlaced.Name = "labelNumberLikePlaced";
+            this.labelNumberLikePlaced.Size = new System.Drawing.Size(127, 13);
+            this.labelNumberLikePlaced.TabIndex = 22;
+            this.labelNumberLikePlaced.Text = "Number of likes placed: 0";
+            // 
             // BotForLikes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1047, 363);
+            this.Controls.Add(this.labelNumberLikePlaced);
+            this.Controls.Add(this.labelActiveFollowers);
             this.Controls.Add(this.LogListBox);
             this.Controls.Add(this.StartButton);
             this.Controls.Add(this.groupBox1);
@@ -107,6 +141,7 @@
             this.Name = "BotForLikes";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "BotForLikes";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BotForLikes_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -121,5 +156,8 @@
         private System.Windows.Forms.ListBox ActiveFollowersUserslistBox;
         private System.Windows.Forms.Button StartButton;
         private System.Windows.Forms.ListBox LogListBox;
+        private System.Windows.Forms.Label labelActiveFollowers;
+        private System.Windows.Forms.Button SaveActiveFollowersButton;
+        private System.Windows.Forms.Label labelNumberLikePlaced;
     }
 }

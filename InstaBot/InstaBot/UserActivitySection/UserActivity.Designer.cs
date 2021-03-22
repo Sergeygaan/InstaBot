@@ -44,6 +44,8 @@
             this.ActiveNotFollowersUsersListBox = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.labelActiveFollowers = new System.Windows.Forms.Label();
+            this.labelNotActiveFollowers = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericImage)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -218,11 +220,31 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Active not followers users";
             // 
+            // labelActiveFollowers
+            // 
+            this.labelActiveFollowers.AutoSize = true;
+            this.labelActiveFollowers.Location = new System.Drawing.Point(238, 9);
+            this.labelActiveFollowers.Name = "labelActiveFollowers";
+            this.labelActiveFollowers.Size = new System.Drawing.Size(47, 13);
+            this.labelActiveFollowers.TabIndex = 18;
+            this.labelActiveFollowers.Text = "Count: 0";
+            // 
+            // labelNotActiveFollowers
+            // 
+            this.labelNotActiveFollowers.AutoSize = true;
+            this.labelNotActiveFollowers.Location = new System.Drawing.Point(624, 12);
+            this.labelNotActiveFollowers.Name = "labelNotActiveFollowers";
+            this.labelNotActiveFollowers.Size = new System.Drawing.Size(47, 13);
+            this.labelNotActiveFollowers.TabIndex = 19;
+            this.labelNotActiveFollowers.Text = "Count: 0";
+            // 
             // UserActivity
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(892, 397);
+            this.Controls.Add(this.labelNotActiveFollowers);
+            this.Controls.Add(this.labelActiveFollowers);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label4);
@@ -263,5 +285,7 @@
         private System.Windows.Forms.ListBox ActiveNotFollowersUsersListBox;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label labelActiveFollowers;
+        private System.Windows.Forms.Label labelNotActiveFollowers;
     }
 }

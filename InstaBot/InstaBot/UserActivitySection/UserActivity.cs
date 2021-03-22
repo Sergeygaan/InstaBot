@@ -31,11 +31,13 @@ namespace InstaBot.UserActivitySection
 
         private async void ButtonStartAnalysis_Click(object sender, System.EventArgs e)
         {
-            if(UserName.Text == string.Empty)
+            if (UserName.Text == string.Empty)
             {
                 MessageBox.Show("Не задан параметр 'User'");
                 return;
             }
+
+            ButtonControl(false);
 
             try
             {
@@ -55,17 +57,21 @@ namespace InstaBot.UserActivitySection
                 {
                     var result1 = await UserAnalysis();
 
-                    GetItemListBox(ActiveFollowersUserslistBox, _activeFollowersUsersList);
-                    GetItemListBox(ActiveNotFollowersUsersListBox, _activeNotFollowersUsersList);
+                    GetItemListBox(ActiveFollowersUserslistBox, labelActiveFollowers, _activeFollowersUsersList);
+                    GetItemListBox(ActiveNotFollowersUsersListBox, labelNotActiveFollowers, _activeNotFollowersUsersList);
                 }
                 else
                 {
                     // ошибка
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 MessageBox.Show(exception.Message);
+            }
+            finally
+            {
+                ButtonControl(true);
             }
         }
 
@@ -121,7 +127,8 @@ namespace InstaBot.UserActivitySection
                             {
                                 UserName = user.UserName,
                                 InstaUserShort = user,
-                                NumberLikes = 1
+                                NumberLikes = 1,
+                                LikeSet = false
                             });
                         }
                         else
@@ -141,7 +148,8 @@ namespace InstaBot.UserActivitySection
                                 {
                                     UserName = instaLikers.UserName,
                                     InstaUserShort = instaLikers,
-                                    NumberLikes = 1
+                                    NumberLikes = 1,
+                                    LikeSet = false
                                 });
                             }
                             else
@@ -241,7 +249,8 @@ namespace InstaBot.UserActivitySection
                     _notActiveBotFollowersUsersList.Add(new InstagramUser
                     {
                         UserName = instaUser.Username,
-                        InstaUserInfo = instaUser
+                        InstaUserInfo = instaUser,
+                        LikeSet = false
                     });
 
                     break;
@@ -258,7 +267,8 @@ namespace InstaBot.UserActivitySection
                         _notActiveBotFollowersUsersList.Add(new InstagramUser
                         {
                             UserName = instaUser.Username,
-                            InstaUserInfo = instaUser
+                            InstaUserInfo = instaUser,
+                            LikeSet = false
                         });
 
                         break;
@@ -311,7 +321,7 @@ namespace InstaBot.UserActivitySection
                 catch { }
             }
 
-            GetItemListBox(ActiveFollowersUserslistBox, _activeFollowersUsersList);
+            GetItemListBox(ActiveFollowersUserslistBox, labelActiveFollowers, _activeFollowersUsersList);
         }
 
         private void SaveActiveNotFollowers_Click(object sender, EventArgs e)
@@ -352,16 +362,32 @@ namespace InstaBot.UserActivitySection
                 catch { }
             }
 
-            GetItemListBox(ActiveNotFollowersUsersListBox, _activeFollowersUsersList);
+            GetItemListBox(ActiveNotFollowersUsersListBox, labelNotActiveFollowers, _activeFollowersUsersList);
         }
 
-        private void GetItemListBox(ListBox listBox, List<InstagramUser> instagramUserList)
+        private void GetItemListBox(
+            ListBox listBox, 
+            Label label,
+            List<InstagramUser> instagramUserList)
         {
             var resultsList = instagramUserList.OrderByDescending(u => u.NumberLikes).ToList();
+            label.Text = "Count: " + resultsList.Count.ToString();
 
             foreach (var instagramUser in resultsList)
             {
                 listBox.Items.Add($"Profile = {instagramUser.UserName},  likes = {instagramUser.NumberLikes}");
+            }
+        }
+
+        private void ButtonControl(bool flag)
+        {
+            if (buttonStartAnalysis.InvokeRequired)
+            {
+                buttonStartAnalysis.Invoke(new MethodInvoker(delegate { buttonStartAnalysis.Enabled = flag; }));
+            }
+            else
+            {
+                buttonStartAnalysis.Enabled = flag;
             }
         }
 

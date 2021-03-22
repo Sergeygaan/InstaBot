@@ -325,8 +325,7 @@ namespace InstaSharper.Classes.Android.DeviceInfo
                         HardwareModel = "Nexus 5",
                         DeviceGuid = new Guid("dde2038c-4f1c-465a-982d-9c844fd2b80a"),
                         PhoneGuid = new Guid("d8d75d13-a124-4304-a935-0247ed1656cb"),
-                        DeviceId =
-                            ApiRequestMessage.GenerateDeviceIdFromGuid(new Guid("dde2038c-4f1c-465a-982d-9c844fd2b80a"))
+                        DeviceId = ApiRequestMessage.GenerateDeviceIdFromGuid(new Guid("dde2038c-4f1c-465a-982d-9c844fd2b80a"))
                     }
                 },
                 {
@@ -413,8 +412,33 @@ namespace InstaSharper.Classes.Android.DeviceInfo
                         HardwareModel = "SM-T705",
                         DeviceGuid = new Guid("c319490f-6f09-467b-b2a5-6f1db13348e9"),
                         PhoneGuid = new Guid("849a7ae1-cf94-4dd5-a977-a2f3e8363e66"),
-                        DeviceId =
-                            ApiRequestMessage.GenerateDeviceIdFromGuid(new Guid("c319490f-6f09-467b-b2a5-6f1db13348e9"))
+                        DeviceId = ApiRequestMessage.GenerateDeviceIdFromGuid(new Guid("c319490f-6f09-467b-b2a5-6f1db13348e9"))
+                    }
+                }
+            };
+
+        public static Dictionary<string, AndroidDevice> GALAXYTADeviceSet =
+            new Dictionary<string, AndroidDevice>
+            {
+                {
+                    AndroidDevices.GALAXY_TAB,
+                    new AndroidDevice
+                    {
+                        AndroidBoardName = "universal5420",
+                        AndroidBootloader = "T705XXU1BOL2",
+                        DeviceBrand = "samsung",
+                        DeviceModel = "Samsung Galaxy Tab S 8.4 LTE",
+                        DeviceModelBoot = "universal5420",
+                        DeviceModelIdentifier = "LRX22G.T705XXU1BOL2",
+                        FirmwareBrand = "Samsung Galaxy Tab S 8.4 LTE",
+                        FirmwareFingerprint = "samsung/klimtltexx/klimtlte:5.0.2/LRX22G/T705XXU1BOL2:user/release-keys",
+                        FirmwareTags = "release-keys",
+                        FirmwareType = "user",
+                        HardwareManufacturer = "samsung",
+                        HardwareModel = "SM-T705",
+                        DeviceGuid = new Guid("c319490f-6f09-467b-b2a5-6f1db13348e9"),
+                        PhoneGuid = new Guid("849a7ae1-cf94-4dd5-a977-a2f3e8363e66"),
+                        DeviceId = ApiRequestMessage.GenerateDeviceIdFromGuid(new Guid("c319490f-6f09-467b-b2a5-6f1db13348e9"))
                     }
                 }
             };
@@ -422,6 +446,11 @@ namespace InstaSharper.Classes.Android.DeviceInfo
         public static AndroidDevice GetAndroidDevice(int index = 1)
         {
             return AndroidAndroidDeviceSets[DevicesNames[index]];
+        }
+
+        public static AndroidDevice GetGALAXYTABDevice()
+        {
+            return GALAXYTADeviceSet[AndroidDevices.GALAXY_TAB];
         }
 
         public static AndroidDevice GetRandomAndroidDevice()
