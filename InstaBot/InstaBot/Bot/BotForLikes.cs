@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TestDataService;
 using TestDataService.Data.UserActivitySection;
+using TestDataService.Extensions;
 
 namespace InstaBot.Bot
 {
@@ -25,82 +26,10 @@ namespace InstaBot.Bot
             _cts = new CancellationTokenSource();
             _token = _cts.Token;
 
+            followersList.InitializationFollowersList(_usersList, "ListOfSharedUsers");
+
             GetTextFile(_numberLikesDayFileName);
             SetNumberLikesDayLabel();
-        }
-
-        #region File
-
-        private void SaveActiveFollowersButton_Click(object sender, EventArgs e)
-        {
-            var saveDialog = new SaveFileDialog
-            {
-                Filter = "Image Files(.txt)|*.txt|All files (*.*)|*.*",
-                FileName = "ActiveFollowersUsersList_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".txt"
-            };
-            if (saveDialog.ShowDialog() == DialogResult.OK)
-            {
-                using (StreamWriter file = File.CreateText(saveDialog.FileName))
-                {
-                    var resultsList = _usersList.OrderByDescending(u => u.NumberLikes).ToList();
-
-                    JsonSerializer serializer = new JsonSerializer();
-                    serializer.Serialize(file, resultsList);
-
-                    _saveUsersList = true;
-                }
-            }
-        }
-
-        private void LoadActiveFollowersButton_Click(object sender, EventArgs e)
-        {
-            var open_dialog = new OpenFileDialog
-            {
-                Filter = "Image Files(*.txt;)|*.txt|All files (*.*)|*.*",
-                Multiselect = false
-            };
-            if (open_dialog.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    using (StreamReader stream = new StreamReader(open_dialog.FileName))
-                    {
-                        _usersList = JsonConvert.DeserializeObject<List<InstagramUser>>(stream.ReadToEnd());
-                    }
-                }
-                catch { }
-            }
-
-            GetItemListBox(ActiveFollowersUserslistBox, _usersList);
-        }
-
-        #endregion
-
-        private void GetItemListBox(ListBox listBox, List<InstagramUser> instagramUserList)
-        {
-            if (listBox.InvokeRequired)
-            {
-                listBox.Invoke(new MethodInvoker(delegate { listBox.Items.Clear(); }));
-            }
-            else
-            {
-                listBox.Items.Clear();
-            }
-
-            var resultsList = instagramUserList.OrderByDescending(u => u.NumberLikes).ToList();
-            labelActiveFollowers.Text = "Count: " + resultsList.Count.ToString();
-
-            foreach (var instagramUser in resultsList)
-            {
-                if (listBox.InvokeRequired)
-                {
-                    listBox.Invoke(new MethodInvoker(delegate { listBox.Items.Add($"Profile = {instagramUser.UserName},  likes = {instagramUser.NumberLikes}, like set = {instagramUser.LikeSet}"); }));
-                }
-                else
-                {
-                    listBox.Items.Add($"Profile = {instagramUser.UserName},  likes = {instagramUser.NumberLikes}, like set = {instagramUser.LikeSet}");
-                }
-            }
         }
 
         private async void StartButton_Click(object sender, EventArgs e)
@@ -174,7 +103,7 @@ namespace InstaBot.Bot
                             instagramUser.LikeSet = true;
                             _saveUsersList = false;
 
-                            GetItemListBox(ActiveFollowersUserslistBox, _usersList);
+                            followersList.DisplayOnTheScreenUserList(_usersList);
 
                             Thread.Sleep(_rand.Next(90000, 150000));
                         }
@@ -185,7 +114,7 @@ namespace InstaBot.Bot
                     instagramUser.LikeSet = true;
                     _saveUsersList = false;
 
-                    GetItemListBox(ActiveFollowersUserslistBox, _usersList);
+                    followersList.DisplayOnTheScreenUserList(_usersList);
                     GetTextLog($"У пользователя {instagramUser.UserName} нет публикаций");
 
                     _numberLikesDay--;
@@ -211,7 +140,7 @@ namespace InstaBot.Bot
                 LogListBox.Items.Add(text);
             }
 
-            SetTextFile(_fileName, text);
+            SaveFileText(_fileName, text);
         }
 
         private void ButtonControl(bool flag)
@@ -224,61 +153,6 @@ namespace InstaBot.Bot
             {
                 StartButton.Enabled = flag;
             }
-
-            if (LoadActiveFollowersButton.InvokeRequired)
-            {
-                LoadActiveFollowersButton.Invoke(new MethodInvoker(delegate { LoadActiveFollowersButton.Enabled = flag; }));
-            }
-            else
-            {
-                LoadActiveFollowersButton.Enabled = flag;
-            }
-        }
-
-        private void SetTextFile(string fileName, string text)
-        {
-            using (var file = new StreamWriter(Directory.GetCurrentDirectory() + $"/{fileName}", true))
-            {
-                file.WriteLine(DateTime.Now.ToString("yyyy-MM-dd") + ": " + text);
-            }
-        }
-
-        private void GetTextFile(string fileName)
-        {
-            if(File.Exists(Directory.GetCurrentDirectory() + $"/{fileName}"))
-            {
-                var lines = File.ReadAllLines(Directory.GetCurrentDirectory() + $"/{fileName}");
-
-                if(!lines.Any())
-                {
-                    SetTextFile(fileName, "0");
-                    _numberLikesDay = 0;
-
-                    return;
-                }
-
-                char[] charsToTrim = { ' ' };
-
-                foreach (var line in lines)
-                {
-                    var arrayLine = line.Trim(charsToTrim).Split(':');
-
-                    if (arrayLine[0] == DateTime.Now.ToString("yyyy-MM-dd"))
-                    {
-                        var numberLikes = short.Parse(arrayLine[1]);
-                        if(numberLikes > _numberLikesDay)
-                        {
-                            _numberLikesDay = numberLikes;
-                            _currentLikesDay = numberLikes;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                SetTextFile(fileName, "0");
-                _numberLikesDay = 0;
-            }
         }
 
         private void BotForLikes_FormClosing(object sender, FormClosingEventArgs e)
@@ -287,7 +161,7 @@ namespace InstaBot.Bot
 
             if (_currentLikesDay != _numberLikesDay)
             {
-                SetTextFile(_numberLikesDayFileName, _numberLikesDay.ToString());
+                SaveFileText(_numberLikesDayFileName, _numberLikesDay.ToString());
             }
 
             if(!_saveUsersList)
@@ -300,7 +174,7 @@ namespace InstaBot.Bot
 
                 if (result == DialogResult.Yes)
                 {
-                    SaveActiveFollowersButton_Click(new object(), new EventArgs());
+                    followersList.SaveButton_Click(new object(), new EventArgs());
                 }
             }
         }
@@ -317,6 +191,22 @@ namespace InstaBot.Bot
             }
         }
 
+        #region File
+
+        private void SaveFileText(string fileName, string text)
+        {
+            FileHelper.SaveText(fileName, text);
+        }
+
+        private void GetTextFile(string fileName)
+        {
+            _numberLikesDay = FileHelper.LoadText(fileName);
+            _currentLikesDay = _numberLikesDay;
+
+            SaveFileText(fileName, _numberLikesDay.ToString());
+        }
+
+        #endregion
 
         private InstagramClient _instagramClient;
 

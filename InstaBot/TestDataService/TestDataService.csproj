@@ -39,6 +39,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,6 +52,7 @@
     <Compile Include="Data\UserActivitySection\MediaLiker.cs" />
     <Compile Include="Extensions\AwaitHelper.cs" />
     <Compile Include="Extensions\DownloadFile.cs" />
+    <Compile Include="Extensions\FileHelper.cs" />
     <Compile Include="Extensions\UnixTimestamp.cs" />
     <Compile Include="InstagramClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

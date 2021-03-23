@@ -27,8 +27,8 @@ namespace InstaBot
 
             lblAccountLoginStatus.Text = @"Status: Attempting to log in.";
 
-            var login = await _instagramClient.Login(txtAccountUsername.Text, txtAccountPassword.Text);
-            // var login = await _instagramClient.Login(Data.Name1, Data.Password1);
+            //var login = await _instagramClient.Login(txtAccountUsername.Text, txtAccountPassword.Text);
+            var login = await _instagramClient.Login(Data.Name1, Data.Password1);
 
             if(login.Succeeded)
             {
@@ -111,12 +111,6 @@ namespace InstaBot
 
                 btnAccountLogin.Enabled = false;
                 btnAccountLogout.Enabled = true;
-
-                // var userFollowers = _instagramClient.GetUserFollowers();
-                // var userMedia = _instagramClient.GetUserMedia(Data.Name1);
-                //var media = userMedia.Value.First();
-                //_instagramClient.UnLikeMedia(media.InstaIdentifier);
-                //_instagramClient.LikeMedia(media.InstaIdentifier);
             }
             else
             {
