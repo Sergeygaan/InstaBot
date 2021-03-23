@@ -107,7 +107,7 @@ namespace InstaBot.Bot
         {
             try
             {
-                ButtonControl(true);
+                ButtonControl(false);
 
                 await Task.Run(() => SetLikes(_token));
             }
@@ -150,7 +150,7 @@ namespace InstaBot.Bot
                     continue;
                 }
 
-                if (_numberLikesDay >= 100)
+                if (_numberLikesDay >= 200)
                 {
                     GetTextLog("Достигнут лимит лайков на день");
                     GetTextLog($"Конец");
@@ -158,17 +158,13 @@ namespace InstaBot.Bot
                     return;
                 }
 
-                Thread.Sleep(_rand.Next(5000, 25000));
-
                 var userMediaList = await _instagramClient.GetUserMedia(instagramUser.UserName, 1);
                 var instaMediaForInstaUser = userMediaList?.Value;
 
-                if (instaMediaForInstaUser.Any() && instaMediaForInstaUser.Count >= 2)
+                if (instaMediaForInstaUser != null && instaMediaForInstaUser.Any() && instaMediaForInstaUser.Count >= 2)
                 {
                     foreach (var currentMedia in instaMediaForInstaUser.ToList().Take(2))
                     {
-                        Thread.Sleep(_rand.Next(30000, 60000));
-
                         var likeMedia = _instagramClient.LikeMedia(currentMedia.InstaIdentifier).Result.Value;
 
                         if (likeMedia)
@@ -179,6 +175,8 @@ namespace InstaBot.Bot
                             _saveUsersList = false;
 
                             GetItemListBox(ActiveFollowersUserslistBox, _usersList);
+
+                            Thread.Sleep(_rand.Next(90000, 150000));
                         }
                     }
                 }
@@ -189,10 +187,14 @@ namespace InstaBot.Bot
 
                     GetItemListBox(ActiveFollowersUserslistBox, _usersList);
                     GetTextLog($"У пользователя {instagramUser.UserName} нет публикаций");
+
+                    _numberLikesDay--;
                 }
 
                 _numberLikesDay++;
                 SetNumberLikesDayLabel();
+
+                Thread.Sleep(_rand.Next(5000, 25000));
             }
 
             GetTextLog($"Конец");
