@@ -95,6 +95,8 @@ namespace TestDataService.Extensions
             else
             {
                 numberLikesDay = 0;
+
+                SaveText(fileName, numberLikesDay.ToString());
             }
 
             return numberLikesDay;

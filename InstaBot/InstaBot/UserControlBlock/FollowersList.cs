@@ -31,13 +31,20 @@ namespace InstaBot
         {
             _usersList.Clear();
 
-            _usersList.AddRange(FileHelper.LoadJson());
+            var usersList = FileHelper.LoadJson();
+
+            if (usersList != null)
+            {
+                _usersList.AddRange(usersList);
+            }
 
             DisplayOnTheScreenUserList(_usersList);
         }
 
         public void DisplayOnTheScreenUserList(List<InstagramUser> usersList)
         {
+            UserListView.Items.Clear();
+
             var resultsList = usersList.OrderByDescending(u => u.NumberLikes).ToList();
             CountLabel.Text = "Count: " + resultsList.Count.ToString();
 

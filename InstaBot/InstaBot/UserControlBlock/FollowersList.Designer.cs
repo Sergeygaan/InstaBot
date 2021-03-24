@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.UserListView = new System.Windows.Forms.ListView();
+            this.User = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.NumberLikes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.LikeSet = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.SaveButton = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
             this.CountLabel = new System.Windows.Forms.Label();
-            this.User = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.NumberLikes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.LikeSet = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,12 +45,29 @@
             this.User,
             this.NumberLikes,
             this.LikeSet});
+            this.UserListView.FullRowSelect = true;
+            this.UserListView.HideSelection = false;
             this.UserListView.Location = new System.Drawing.Point(3, 16);
             this.UserListView.Name = "UserListView";
             this.UserListView.Size = new System.Drawing.Size(397, 304);
             this.UserListView.TabIndex = 0;
             this.UserListView.UseCompatibleStateImageBehavior = false;
             this.UserListView.View = System.Windows.Forms.View.Details;
+            // 
+            // User
+            // 
+            this.User.Text = "User";
+            this.User.Width = 180;
+            // 
+            // NumberLikes
+            // 
+            this.NumberLikes.Text = "Number likes";
+            this.NumberLikes.Width = 100;
+            // 
+            // LikeSet
+            // 
+            this.LikeSet.Text = "Like set";
+            this.LikeSet.Width = 100;
             // 
             // groupBox1
             // 
@@ -91,21 +108,6 @@
             this.CountLabel.Size = new System.Drawing.Size(47, 13);
             this.CountLabel.TabIndex = 18;
             this.CountLabel.Text = "Count: 0";
-            // 
-            // User
-            // 
-            this.User.Text = "User";
-            this.User.Width = 180;
-            // 
-            // NumberLikes
-            // 
-            this.NumberLikes.Text = "Number likes";
-            this.NumberLikes.Width = 100;
-            // 
-            // LikeSet
-            // 
-            this.LikeSet.Text = "Like set";
-            this.LikeSet.Width = 100;
             // 
             // FollowersList
             // 

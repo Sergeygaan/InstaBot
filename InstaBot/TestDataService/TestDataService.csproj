@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\UserActivitySection\AffixedLikesUser.cs" />
     <Compile Include="Data\UserActivitySection\InstagramUser.cs" />
     <Compile Include="Data\UserActivitySection\MediaLiker.cs" />
     <Compile Include="Extensions\AwaitHelper.cs" />

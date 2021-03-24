@@ -27,9 +27,9 @@ namespace InstaBot.Bot
             _token = _cts.Token;
 
             followersList.InitializationFollowersList(_usersList, "ListOfSharedUsers");
-
+ 
             GetTextFile(_numberLikesDayFileName);
-            SetNumberLikesDayLabel();
+            affixedLikes1.SetNumberLikesDayLabel(_numberLikesDay);
         }
 
         private async void StartButton_Click(object sender, EventArgs e)
@@ -40,7 +40,7 @@ namespace InstaBot.Bot
 
                 await Task.Run(() => SetLikes(_token));
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 MessageBox.Show(exception.Message);
             }
@@ -53,16 +53,9 @@ namespace InstaBot.Bot
         private async void SetLikes(CancellationToken token)
         {
             File.Delete(Directory.GetCurrentDirectory() + $"/{_fileName}");
-            if (LogListBox.InvokeRequired)
-            {
-                LogListBox.Invoke(new MethodInvoker(delegate { LogListBox.Items.Clear(); }));
-            }
-            else
-            {
-                LogListBox.Items.Clear();
-            }
+            affixedLikes1.Clear();
 
-            GetTextLog($"Начало");
+            GetTextLog(new AffixedLikesUser { Text = "Начало" });
 
             if (token.IsCancellationRequested)
             {
@@ -75,14 +68,18 @@ namespace InstaBot.Bot
             {
                 if (instagramUser.LikeSet)
                 {
-                    GetTextLog($"Пользователю = {instagramUser.UserName} уже был поставлен лайк");
+                    GetTextLog(new AffixedLikesUser
+                    {
+                        UserName = instagramUser.UserName,
+                        Text = "Пользователю уже был поставлен лайк"
+                    });
                     continue;
                 }
 
                 if (_numberLikesDay >= 200)
                 {
-                    GetTextLog("Достигнут лимит лайков на день");
-                    GetTextLog($"Конец");
+                    GetTextLog(new AffixedLikesUser { Text = "Достигнут лимит лайков на день" });
+                    GetTextLog(new AffixedLikesUser { Text = "Конец" });
 
                     return;
                 }
@@ -90,23 +87,45 @@ namespace InstaBot.Bot
                 var userMediaList = await _instagramClient.GetUserMedia(instagramUser.UserName, 1);
                 var instaMediaForInstaUser = userMediaList?.Value;
 
-                if (instaMediaForInstaUser != null && instaMediaForInstaUser.Any() && instaMediaForInstaUser.Count >= 2)
+                if (instaMediaForInstaUser != null)
                 {
-                    foreach (var currentMedia in instaMediaForInstaUser.ToList().Take(2))
+                    if (instaMediaForInstaUser.Any() && instaMediaForInstaUser.Count >= 2)
                     {
-                        var likeMedia = _instagramClient.LikeMedia(currentMedia.InstaIdentifier).Result.Value;
-
-                        if (likeMedia)
+                        foreach (var currentMedia in instaMediaForInstaUser.ToList().Take(2))
                         {
-                            GetTextLog($"Запись: https://www.instagram.com/p/{currentMedia.Code} Пользователь = {instagramUser.UserName}");
+                            var likeMedia = _instagramClient.LikeMedia(currentMedia.InstaIdentifier).Result.Value;
 
-                            instagramUser.LikeSet = true;
-                            _saveUsersList = false;
+                            if (likeMedia)
+                            {
+                                _numberLikesDay++;
 
-                            followersList.DisplayOnTheScreenUserList(_usersList);
+                                GetTextLog(new AffixedLikesUser
+                                {
+                                    UserName = instagramUser.UserName,
+                                    UrlMedia = $"https://www.instagram.com/p/{currentMedia.Code}",
+                                    Text = "Лайк поставлен"
+                                });
 
-                            Thread.Sleep(_rand.Next(90000, 150000));
+                                instagramUser.LikeSet = true;
+                                _saveUsersList = false;
+
+                                followersList.DisplayOnTheScreenUserList(_usersList);
+
+                                Thread.Sleep(_rand.Next(90000, 150000));
+                            }
                         }
+                    }
+                    else
+                    {
+                        instagramUser.LikeSet = true;
+                        _saveUsersList = false;
+
+                        followersList.DisplayOnTheScreenUserList(_usersList);
+                        GetTextLog(new AffixedLikesUser
+                        {
+                            UserName = instagramUser.UserName,
+                            Text = "У пользователя нет публикаций"
+                        });
                     }
                 }
                 else
@@ -115,32 +134,26 @@ namespace InstaBot.Bot
                     _saveUsersList = false;
 
                     followersList.DisplayOnTheScreenUserList(_usersList);
-                    GetTextLog($"У пользователя {instagramUser.UserName} нет публикаций");
-
-                    _numberLikesDay--;
+                    GetTextLog(new AffixedLikesUser
+                    {
+                        UserName = instagramUser.UserName,
+                        Text = "У пользователя закрытый профиль"
+                    });
                 }
 
-                _numberLikesDay++;
-                SetNumberLikesDayLabel();
+                affixedLikes1.SetNumberLikesDayLabel(_numberLikesDay);
 
                 Thread.Sleep(_rand.Next(5000, 25000));
             }
 
-            GetTextLog($"Конец");
+            GetTextLog(new AffixedLikesUser { Text = "Конец" });
         }
 
-        private void GetTextLog(string text)
+        private void GetTextLog(AffixedLikesUser affixedLikesUser)
         {
-            if (LogListBox.InvokeRequired)
-            {
-                LogListBox.Invoke(new MethodInvoker(delegate { LogListBox.Items.Add(text); }));
-            }
-            else
-            {
-                LogListBox.Items.Add(text);
-            }
+            affixedLikes1.DisplayOnTheScreenUserList(affixedLikesUser);
 
-            SaveFileText(_fileName, text);
+            // SaveFileText(_fileName, text);
         }
 
         private void ButtonControl(bool flag)
@@ -179,18 +192,6 @@ namespace InstaBot.Bot
             }
         }
 
-        private void SetNumberLikesDayLabel()
-        {
-            if (StartButton.InvokeRequired)
-            {
-                StartButton.Invoke(new MethodInvoker(delegate { labelNumberLikePlaced.Text = "Number of likes placed:" + _numberLikesDay; }));
-            }
-            else
-            {
-                labelNumberLikePlaced.Text = "Number of likes placed:" + _numberLikesDay;
-            }
-        }
-
         #region File
 
         private void SaveFileText(string fileName, string text)
@@ -202,8 +203,6 @@ namespace InstaBot.Bot
         {
             _numberLikesDay = FileHelper.LoadText(fileName);
             _currentLikesDay = _numberLikesDay;
-
-            SaveFileText(fileName, _numberLikesDay.ToString());
         }
 
         #endregion
