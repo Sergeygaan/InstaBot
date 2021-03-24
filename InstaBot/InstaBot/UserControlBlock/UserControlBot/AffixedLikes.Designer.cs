@@ -34,6 +34,7 @@
             this.Text = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.labelNumberLikePlaced = new System.Windows.Forms.Label();
             this.OpenMediaButton = new System.Windows.Forms.Button();
+            this.OpenUserButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // AffixedLikesListView
@@ -86,10 +87,21 @@
             this.OpenMediaButton.UseVisualStyleBackColor = true;
             this.OpenMediaButton.Click += new System.EventHandler(this.OpenMediaButton_Click);
             // 
+            // OpenUserButton
+            // 
+            this.OpenUserButton.Location = new System.Drawing.Point(454, 326);
+            this.OpenUserButton.Name = "OpenUserButton";
+            this.OpenUserButton.Size = new System.Drawing.Size(96, 23);
+            this.OpenUserButton.TabIndex = 25;
+            this.OpenUserButton.Text = "Open user";
+            this.OpenUserButton.UseVisualStyleBackColor = true;
+            this.OpenUserButton.Click += new System.EventHandler(this.OpenUserButton_Click);
+            // 
             // AffixedLikes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.OpenUserButton);
             this.Controls.Add(this.OpenMediaButton);
             this.Controls.Add(this.labelNumberLikePlaced);
             this.Controls.Add(this.AffixedLikesListView);
@@ -108,5 +120,6 @@
         private System.Windows.Forms.ColumnHeader Text;
         private System.Windows.Forms.Label labelNumberLikePlaced;
         private System.Windows.Forms.Button OpenMediaButton;
+        private System.Windows.Forms.Button OpenUserButton;
     }
 }

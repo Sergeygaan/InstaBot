@@ -64,32 +64,51 @@ namespace InstaBot
             }
         }
 
+        private void OpenUserButton_Click(object sender, EventArgs e)
+        {
+            if (AffixedLikesListView.SelectedIndices.Count > 0)
+            {
+                var subItemText = AffixedLikesListView.SelectedItems[0].SubItems[0].Text;
+
+                if (!string.IsNullOrEmpty(subItemText))
+                {
+                    OpenBrowser("https://www.instagram.com/" + subItemText);
+                }
+            }
+        }
+
         private void OpenMediaButton_Click(object sender, System.EventArgs e)
         {
             if (AffixedLikesListView.SelectedIndices.Count > 0)
             {
                 var subItemText = AffixedLikesListView.SelectedItems[0].SubItems[1].Text;
 
-                if(!string.IsNullOrEmpty(subItemText))
+                OpenBrowser(subItemText);
+            }
+        }
+
+        private void OpenBrowser(string subItemText)
+        {
+            if (!string.IsNullOrEmpty(subItemText))
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start("chrome", subItemText + " --new-window --start-fullscreen");
+                }
+                catch
                 {
                     try
                     {
-                        System.Diagnostics.Process.Start("chrome", subItemText + "--new-window --start-fullscreen");
+                        System.Diagnostics.Process.Start("firefox", "-new-window" + subItemText);
                     }
-                    catch
+                    catch (Exception exception)
                     {
-                        try
-                        {
-                            System.Diagnostics.Process.Start("firefox", "-new-window" + subItemText);
-                        }
-                        catch (Exception exception)
-                        {
-                            MessageBox.Show(exception.Message);
-                        }
+                        MessageBox.Show(exception.Message);
                     }
                 }
             }
         }
+
 
         private List<AffixedLikesUser> affixedLikesUsersList;
     }
