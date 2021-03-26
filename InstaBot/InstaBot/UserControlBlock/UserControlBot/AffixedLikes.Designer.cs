@@ -44,6 +44,7 @@
             this.Media,
             this.Text});
             this.AffixedLikesListView.FullRowSelect = true;
+            this.AffixedLikesListView.GridLines = true;
             this.AffixedLikesListView.HideSelection = false;
             this.AffixedLikesListView.Location = new System.Drawing.Point(3, 16);
             this.AffixedLikesListView.MultiSelect = false;

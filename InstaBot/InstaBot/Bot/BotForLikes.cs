@@ -36,8 +36,6 @@ namespace InstaBot.Bot
         {
             try
             {
-                ButtonControl(false);
-
                 await Task.Run(() => SetLikes(_token));
             }
             catch (Exception exception)
@@ -46,19 +44,21 @@ namespace InstaBot.Bot
             }
             finally
             {
-                ButtonControl(true);
             }
         }
 
         private async void SetLikes(CancellationToken token)
         {
+            ButtonControl(false);
+
             File.Delete(Directory.GetCurrentDirectory() + $"/{_fileName}");
             affixedLikes1.Clear();
 
             GetTextLog(new AffixedLikesUser { Text = "Начало" });
 
-            if (token.IsCancellationRequested)
+            if(InstagramClient._instaApi == null)
             {
+                MessageBox.Show("User is not logged in");
                 return;
             }
 
@@ -66,6 +66,11 @@ namespace InstaBot.Bot
 
             foreach (var instagramUser in resultsList)
             {
+                if (token.IsCancellationRequested)
+                {
+                    return;
+                }
+
                 if (instagramUser.LikeSet)
                 {
                     GetTextLog(new AffixedLikesUser
@@ -97,8 +102,6 @@ namespace InstaBot.Bot
 
                             if (likeMedia)
                             {
-                                _numberLikesDay++;
-
                                 GetTextLog(new AffixedLikesUser
                                 {
                                     UserName = instagramUser.UserName,
@@ -109,9 +112,14 @@ namespace InstaBot.Bot
                                 instagramUser.LikeSet = true;
                                 _saveUsersList = false;
 
+                                _numberLikesDay++;
+
+                                affixedLikes1.SetNumberLikesDayLabel(_numberLikesDay);
+
+
                                 followersList.DisplayOnTheScreenUserList(_usersList);
 
-                                Thread.Sleep(_rand.Next(90000, 150000));
+                                Thread.Sleep(_rand.Next(100000, 200000));
                             }
                         }
                     }
@@ -141,12 +149,11 @@ namespace InstaBot.Bot
                     });
                 }
 
-                affixedLikes1.SetNumberLikesDayLabel(_numberLikesDay);
-
                 Thread.Sleep(_rand.Next(5000, 25000));
             }
 
             GetTextLog(new AffixedLikesUser { Text = "Конец" });
+            ButtonControl(true);
         }
 
         private void GetTextLog(AffixedLikesUser affixedLikesUser)

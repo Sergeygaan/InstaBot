@@ -12,6 +12,7 @@ namespace InstaBot
             InitializeComponent();
 
             affixedLikesUsersList = new List<AffixedLikesUser>();
+            ControlExtensions.DoubleBuffering(AffixedLikesListView, true);
         }
 
         public void DisplayOnTheScreenUserList(AffixedLikesUser affixedLikesUser)

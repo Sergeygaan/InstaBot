@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using TestDataService.Extensions;
 using TestDataService.Data.UserActivitySection;
 using System.Linq;
+using System.Reflection;
 
 namespace InstaBot
 {
@@ -12,6 +13,8 @@ namespace InstaBot
         public FollowersList()
         {
             InitializeComponent();
+
+            ControlExtensions.DoubleBuffering(UserListView, true);
         }
 
         public void InitializationFollowersList(
@@ -45,10 +48,18 @@ namespace InstaBot
         {
             Clear();
 
-            var resultsList = usersList.OrderByDescending(u => u.NumberLikes).ToList();
-            CountLabel.Text = "Count: " + resultsList.Count.ToString();
+            _usersList = usersList.GetRange(0, usersList.Count).OrderByDescending(u => u.NumberLikes).ToList();
 
-            foreach (var instagramUser in resultsList)
+            if (UserListView.InvokeRequired)
+            {
+                UserListView.Invoke(new MethodInvoker(delegate { CountLabel.Text = "Count: " + _usersList.Count.ToString(); }));
+            }
+            else
+            {
+                CountLabel.Text = "Count: " + _usersList.Count.ToString();
+            }
+
+            foreach (var instagramUser in _usersList)
             {
                 if (UserListView.InvokeRequired)
                 {
@@ -91,5 +102,14 @@ namespace InstaBot
         private List<InstagramUser> _usersList;
 
         private string _nameFollowersList;
+    }
+
+    public static class ControlExtensions
+    {
+        public static void DoubleBuffering(this Control control, bool enable)
+        {
+            var method = typeof(Control).GetMethod("SetStyle", BindingFlags.Instance | BindingFlags.NonPublic);
+            method.Invoke(control, new object[] { ControlStyles.OptimizedDoubleBuffer, enable });
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace TestDataService.Extensions
         {
             var saveDialog = new SaveFileDialog
             {
-                Filter = "Image Files(.txt)|*.png|All files (*.*)|*.*",
+                Filter = "Text Files(.txt)|*.txt|All files (*.*)|*.*",
                 FileName = $"{fileName}_" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt"
             };
             if (saveDialog.ShowDialog() == DialogResult.OK)

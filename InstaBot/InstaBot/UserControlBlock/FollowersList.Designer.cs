@@ -46,8 +46,10 @@
             this.NumberLikes,
             this.LikeSet});
             this.UserListView.FullRowSelect = true;
+            this.UserListView.GridLines = true;
             this.UserListView.HideSelection = false;
             this.UserListView.Location = new System.Drawing.Point(3, 16);
+            this.UserListView.MultiSelect = false;
             this.UserListView.Name = "UserListView";
             this.UserListView.Size = new System.Drawing.Size(397, 304);
             this.UserListView.TabIndex = 0;
