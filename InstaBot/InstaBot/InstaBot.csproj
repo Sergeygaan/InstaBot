@@ -74,6 +74,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SubscribedUsers\SubscribedUsers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SubscribedUsers\SubscribedUsers.Designer.cs">
+      <DependentUpon>SubscribedUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserActivitySection\UserActivity.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +116,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SubscribedUsers\SubscribedUsers.resx">
+      <DependentUpon>SubscribedUsers.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserActivitySection\UserActivity.resx">
       <DependentUpon>UserActivity.cs</DependentUpon>
     </EmbeddedResource>

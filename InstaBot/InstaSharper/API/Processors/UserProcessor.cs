@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using InstaSharper.Classes;
 using InstaSharper.Classes.Android.DeviceInfo;
@@ -201,30 +202,23 @@ namespace InstaSharper.API.Processors
             try
             {
                 var user = await GetUserAsync(username);
-                var userFollowersUri =
-                    UriCreator.GetUserFollowersUri(user.Value.Pk, _user.RankToken, searchQuery,
-                        paginationParameters.NextId);
+                var userFollowersUri = UriCreator.GetUserFollowersUri(user.Value.Pk, _user.RankToken, searchQuery, paginationParameters.NextId);
                 var followersResponse = await GetUserListByUriAsync(userFollowersUri);
                 if (!followersResponse.Succeeded)
                     return Result.Fail(followersResponse.Info, (InstaUserShortList) null);
-                followers.AddRange(
-                    followersResponse.Value.Items?.Select(ConvertersFabric.Instance.GetUserShortConverter)
-                        .Select(converter => converter.Convert()));
+                followers.AddRange(followersResponse.Value.Items?.Select(ConvertersFabric.Instance.GetUserShortConverter).Select(converter => converter.Convert()));
                 followers.NextId = followersResponse.Value.NextMaxId;
 
                 var pagesLoaded = 1;
-                while (!string.IsNullOrEmpty(followersResponse.Value.NextMaxId)
-                       && pagesLoaded < paginationParameters.MaximumPagesToLoad)
+                while (!string.IsNullOrEmpty(followersResponse.Value.NextMaxId) && pagesLoaded < paginationParameters.MaximumPagesToLoad)
                 {
-                    var nextFollowersUri =
-                        UriCreator.GetUserFollowersUri(user.Value.Pk, _user.RankToken, searchQuery,
-                            followersResponse.Value.NextMaxId);
+                    Thread.Sleep(1500);
+
+                    var nextFollowersUri = UriCreator.GetUserFollowersUri(user.Value.Pk, _user.RankToken, searchQuery, followersResponse.Value.NextMaxId);
                     followersResponse = await GetUserListByUriAsync(nextFollowersUri);
                     if (!followersResponse.Succeeded)
                         return Result.Fail(followersResponse.Info, followers);
-                    followers.AddRange(
-                        followersResponse.Value.Items?.Select(ConvertersFabric.Instance.GetUserShortConverter)
-                            .Select(converter => converter.Convert()));
+                    followers.AddRange(followersResponse.Value.Items?.Select(ConvertersFabric.Instance.GetUserShortConverter).Select(converter => converter.Convert()));
                     pagesLoaded++;
                     followers.NextId = followersResponse.Value.NextMaxId;
                 }

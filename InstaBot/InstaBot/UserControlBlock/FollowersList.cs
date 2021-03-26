@@ -43,7 +43,7 @@ namespace InstaBot
 
         public void DisplayOnTheScreenUserList(List<InstagramUser> usersList)
         {
-            UserListView.Items.Clear();
+            Clear();
 
             var resultsList = usersList.OrderByDescending(u => u.NumberLikes).ToList();
             CountLabel.Text = "Count: " + resultsList.Count.ToString();
@@ -67,6 +67,24 @@ namespace InstaBot
                         instagramUser.UserName, instagramUser.NumberLikes.ToString(), instagramUser.LikeSet.ToString()
                     }));
                 }
+            }
+        }
+
+        public void Clear()
+        {
+            if (UserListView.InvokeRequired)
+            {
+                UserListView.Invoke(new MethodInvoker(delegate 
+                {
+                    _usersList.Clear();
+                    CountLabel.Text = "Count: 0";
+                    UserListView.Items.Clear();
+                } ));
+            }
+            else
+            {
+                CountLabel.Text = "Count: 0";
+                UserListView.Items.Clear();
             }
         }
 

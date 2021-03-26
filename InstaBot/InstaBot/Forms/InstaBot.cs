@@ -161,6 +161,18 @@ namespace InstaBot
 
         #endregion
 
+        #region SubscribedUsers
+
+        private void SubscribedUsersButton_Click(object sender, EventArgs e)
+        {
+            using (var subscribedUsers = new SubscribedUsers(_instagramClient))
+            {
+                subscribedUsers.ShowDialog();
+            }
+        }
+
+        #endregion
+
         private InstagramClient _instagramClient;
     }
 }

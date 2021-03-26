@@ -42,6 +42,7 @@
             this.txtAccountUsername = new System.Windows.Forms.TextBox();
             this.buttonUserActivity = new System.Windows.Forms.Button();
             this.BotForLikesButton = new System.Windows.Forms.Button();
+            this.SubscribedUsersButton = new System.Windows.Forms.Button();
             this.gbAccountSettings.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -166,9 +167,9 @@
             // 
             // buttonUserActivity
             // 
-            this.buttonUserActivity.Location = new System.Drawing.Point(12, 214);
+            this.buttonUserActivity.Location = new System.Drawing.Point(205, 171);
             this.buttonUserActivity.Name = "buttonUserActivity";
-            this.buttonUserActivity.Size = new System.Drawing.Size(75, 23);
+            this.buttonUserActivity.Size = new System.Drawing.Size(99, 23);
             this.buttonUserActivity.TabIndex = 6;
             this.buttonUserActivity.Text = "UserActivity";
             this.buttonUserActivity.UseVisualStyleBackColor = true;
@@ -176,19 +177,30 @@
             // 
             // BotForLikesButton
             // 
-            this.BotForLikesButton.Location = new System.Drawing.Point(12, 243);
+            this.BotForLikesButton.Location = new System.Drawing.Point(205, 200);
             this.BotForLikesButton.Name = "BotForLikesButton";
-            this.BotForLikesButton.Size = new System.Drawing.Size(75, 23);
+            this.BotForLikesButton.Size = new System.Drawing.Size(99, 23);
             this.BotForLikesButton.TabIndex = 7;
             this.BotForLikesButton.Text = "BotForLikes";
             this.BotForLikesButton.UseVisualStyleBackColor = true;
             this.BotForLikesButton.Click += new System.EventHandler(this.BotForLikesButton_Click);
+            // 
+            // SubscribedUsersButton
+            // 
+            this.SubscribedUsersButton.Location = new System.Drawing.Point(205, 229);
+            this.SubscribedUsersButton.Name = "SubscribedUsersButton";
+            this.SubscribedUsersButton.Size = new System.Drawing.Size(99, 23);
+            this.SubscribedUsersButton.TabIndex = 8;
+            this.SubscribedUsersButton.Text = "SubscribedUsers";
+            this.SubscribedUsersButton.UseVisualStyleBackColor = true;
+            this.SubscribedUsersButton.Click += new System.EventHandler(this.SubscribedUsersButton_Click);
             // 
             // InstaBot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(322, 285);
+            this.Controls.Add(this.SubscribedUsersButton);
             this.Controls.Add(this.BotForLikesButton);
             this.Controls.Add(this.buttonUserActivity);
             this.Controls.Add(this.buttonColorProfile);
@@ -217,6 +229,7 @@
         private System.Windows.Forms.Button buttonTwoFactor;
         private System.Windows.Forms.Button buttonUserActivity;
         private System.Windows.Forms.Button BotForLikesButton;
+        private System.Windows.Forms.Button SubscribedUsersButton;
     }
 }
 
