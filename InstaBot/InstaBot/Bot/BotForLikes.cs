@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -119,7 +118,7 @@ namespace InstaBot.Bot
 
                                 followersList.DisplayOnTheScreenUserList(_usersList);
 
-                                Thread.Sleep(_rand.Next(100000, 200000));
+                                Thread.Sleep(_rand.Next(120000, 150000));
                             }
                         }
                     }
@@ -149,7 +148,7 @@ namespace InstaBot.Bot
                     });
                 }
 
-                Thread.Sleep(_rand.Next(5000, 25000));
+                Thread.Sleep(_rand.Next(15000, 30000));
             }
 
             GetTextLog(new AffixedLikesUser { Text = "Конец" });

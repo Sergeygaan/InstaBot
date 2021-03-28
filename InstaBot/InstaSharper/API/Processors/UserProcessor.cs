@@ -212,7 +212,7 @@ namespace InstaSharper.API.Processors
                 var pagesLoaded = 1;
                 while (!string.IsNullOrEmpty(followersResponse.Value.NextMaxId) && pagesLoaded < paginationParameters.MaximumPagesToLoad)
                 {
-                    Thread.Sleep(1500);
+                    Thread.Sleep(100);
 
                     var nextFollowersUri = UriCreator.GetUserFollowersUri(user.Value.Pk, _user.RankToken, searchQuery, followersResponse.Value.NextMaxId);
                     followersResponse = await GetUserListByUriAsync(nextFollowersUri);

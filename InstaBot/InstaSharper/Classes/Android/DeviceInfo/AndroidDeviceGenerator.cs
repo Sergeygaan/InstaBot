@@ -203,7 +203,8 @@ namespace InstaSharper.Classes.Android.DeviceInfo
                         HardwareManufacturer = "samsung",
                         HardwareModel = "SM-G935T",
                         DeviceGuid = new Guid("e428e21e-f105-4201-8287-b8bd9bd8727f"),
-                        PhoneGuid = new Guid("2a6e43a7-0204-4b76-89a6-d7d17303e5f7")
+                        PhoneGuid = new Guid("2a6e43a7-0204-4b76-89a6-d7d17303e5f7"),
+                        DeviceId = ApiRequestMessage.GenerateDeviceIdFromGuid(new Guid("dde2038c-4f1c-465a-982d-9c844fd2b81a"))
                     }
                 },
                 {
@@ -223,7 +224,8 @@ namespace InstaSharper.Classes.Android.DeviceInfo
                         HardwareManufacturer = "Sony",
                         HardwareModel = "E6653",
                         DeviceGuid = new Guid("78178fef-aa0c-4691-9c00-16482c25ce24"),
-                        PhoneGuid = new Guid("aaeb4dfb-a93d-4bd6-9147-1a3aaee60510")
+                        PhoneGuid = new Guid("aaeb4dfb-a93d-4bd6-9147-1a3aaee60510"),
+                        DeviceId = ApiRequestMessage.GenerateDeviceIdFromGuid(new Guid("dde2238c-4f1c-465a-982d-9c844fd2b80a"))
                     }
                 },
                 {
