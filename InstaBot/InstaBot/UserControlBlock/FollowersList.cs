@@ -50,13 +50,20 @@ namespace InstaBot
 
             _usersList = usersList.GetRange(0, usersList.Count).OrderByDescending(u => u.NumberLikes).ToList();
 
+            var likesPosted = _usersList.FindAll(_ => _.LikeSet).Count;
+
             if (UserListView.InvokeRequired)
             {
-                UserListView.Invoke(new MethodInvoker(delegate { CountLabel.Text = "Count: " + _usersList.Count.ToString(); }));
+                UserListView.Invoke(new MethodInvoker(delegate 
+                {
+                    CountLabel.Text = "Count: " + _usersList.Count.ToString();
+                    LikesPostedLabel.Text = "Likes posted: " + likesPosted.ToString();
+                }));
             }
             else
             {
                 CountLabel.Text = "Count: " + _usersList.Count.ToString();
+                LikesPostedLabel.Text = "Likes posted: " + likesPosted.ToString();
             }
 
             foreach (var instagramUser in _usersList)

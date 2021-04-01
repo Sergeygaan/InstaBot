@@ -40,6 +40,7 @@ namespace InstaBot.Bot
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message);
+                ButtonControl(true);
             }
             finally
             {
@@ -58,6 +59,7 @@ namespace InstaBot.Bot
             if(InstagramClient._instaApi == null)
             {
                 MessageBox.Show("User is not logged in");
+                ButtonControl(true);
                 return;
             }
 
@@ -67,6 +69,7 @@ namespace InstaBot.Bot
             {
                 if (token.IsCancellationRequested)
                 {
+                    ButtonControl(true);
                     return;
                 }
 

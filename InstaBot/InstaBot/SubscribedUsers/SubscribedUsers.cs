@@ -80,6 +80,8 @@ namespace InstaBot
 
         private async Task<bool> GetDataInstagram()
         {
+            // var user = await _instagramClient.GetUserByName(UserName.Text);
+            // var story = await _instagramClient.GetUserStoryAsync(user.Value.Pk);
             var userMediaList = await _instagramClient.GetUserMedia(UserName.Text, (int)numericImage.Value / 18);
 
             foreach (var media in userMediaList.Value)
@@ -112,72 +114,116 @@ namespace InstaBot
 
         private async Task<bool> UserAnalysis()
         {
-            foreach (var mediaLiker in _mediaLikerList)
+            foreach (var userLoad in _userFollowersLoadList)
             {
-                foreach (var instaLikers in mediaLiker.InstaLikersList)
+                if (userLoad.UserName == UserName.Text)
                 {
-                    if (instaLikers.UserName == UserName.Text)
+                    continue;
+                }
+
+                var userFollower = _userFollowersList.Find(item => item.UserName == userLoad.UserName);
+
+                var countLikes = _mediaLikerList
+                      .Select(likes => likes.InstaLikersList
+                      .FindAll(item => item.UserName == userLoad.UserName))
+                      .ToList()
+                      .FindAll(_ => _.Any())
+                      .Count();
+
+                if (userFollower != null)
+                {
+                    _subscribedUsersList.Add(new InstagramUser
                     {
-                        continue;
-                    }
-
-                    var userFollowersLoad = _userFollowersLoadList.Find(item => item.UserName == instaLikers.UserName);
-
-                    if(userFollowersLoad == null)
+                        UserName = userLoad.UserName,
+                        NumberLikes = countLikes,
+                        LikeSet = userLoad.LikeSet
+                    });
+                }
+                else
+                {
+                    if (countLikes > 0)
                     {
-                        continue;
-                    }
-
-                    var userFollower = _userFollowersList.Find(item => item.UserName == userFollowersLoad.UserName);
-
-                    if (userFollowersLoad != null && userFollower != null)
-                    {
-                        var activeFollowersUser = _subscribedUsersList.Find(_ => _.UserName == userFollowersLoad.UserName);
-                        if (activeFollowersUser == null)
+                        _likedUsersList.Add(new InstagramUser
                         {
-                            _subscribedUsersList.Add(new InstagramUser
-                            {
-                                UserName = userFollowersLoad.UserName,
-                                NumberLikes = 1,
-                                LikeSet = userFollowersLoad.LikeSet
-                            });
-                        }
-                        else
-                        {
-                            activeFollowersUser.NumberLikes += 1;
-                        }
-                    }
-
-                    if (userFollowersLoad != null && userFollower == null)
-                    {
-                        if (instaLikers.UserName != UserName.Text)
-                        {
-                            var activeNotFollowersUser = _likedUsersList.Find(_ => _.UserName == instaLikers.UserName);
-                            if (activeNotFollowersUser == null)
-                            {
-                                _likedUsersList.Add(new InstagramUser
-                                {
-                                    UserName = userFollowersLoad.UserName,
-                                    NumberLikes = 1,
-                                    LikeSet = userFollowersLoad.LikeSet
-                                });
-                            }
-                            else
-                            {
-                                activeNotFollowersUser.NumberLikes += 1;
-                            }
-                        }
-
-                        for (var index = 0; index < _userFollowersList.Count; index++)
-                        {
-                            if (_userFollowersList[index].UserName == "an.mehendy")
-                            {
-                                var a = 1;
-                            }
-                        }
+                            UserName = userLoad.UserName,
+                            NumberLikes = countLikes,
+                            LikeSet = userLoad.LikeSet
+                        });
                     }
                 }
             }
+
+            //foreach (var mediaLiker in _mediaLikerList)
+            //{
+            //    foreach (var instaLikers in mediaLiker.InstaLikersList)
+            //    {
+            //        if (instaLikers.UserName == UserName.Text)
+            //        {
+            //            continue;
+            //        }
+
+            //        if (instaLikers.UserName == "ne_cactus")
+            //        {
+            //            var a = 1;
+            //        }
+
+            //        var userFollowersLoad = _userFollowersLoadList.Find(item => item.UserName == instaLikers.UserName);
+
+            //        if(userFollowersLoad == null)
+            //        {
+            //            continue;
+            //        }
+
+            //        var userFollower = _userFollowersList.Find(item => item.UserName == userFollowersLoad.UserName);
+
+            //        if (userFollowersLoad != null && userFollower != null)
+            //        {
+            //            var activeFollowersUser = _subscribedUsersList.Find(_ => _.UserName == userFollowersLoad.UserName);
+            //            if (activeFollowersUser == null)
+            //            {
+            //                _subscribedUsersList.Add(new InstagramUser
+            //                {
+            //                    UserName = userFollowersLoad.UserName,
+            //                    NumberLikes = 1,
+            //                    LikeSet = userFollowersLoad.LikeSet
+            //                });
+            //            }
+            //            else
+            //            {
+            //                activeFollowersUser.NumberLikes += 1;
+            //            }
+            //        }
+
+            //        if (userFollowersLoad != null && userFollower == null)
+            //        {
+            //            if (instaLikers.UserName != UserName.Text)
+            //            {
+            //                var activeNotFollowersUser = _likedUsersList.Find(_ => _.UserName == instaLikers.UserName);
+            //                if (activeNotFollowersUser == null)
+            //                {
+            //                    _likedUsersList.Add(new InstagramUser
+            //                    {
+            //                        UserName = userFollowersLoad.UserName,
+            //                        NumberLikes = 1,
+            //                        LikeSet = userFollowersLoad.LikeSet
+            //                    });
+            //                }
+            //                else
+            //                {
+            //                    activeNotFollowersUser.NumberLikes += 1;
+            //                }
+            //            }
+
+            //            for (var index = 0; index < _userFollowersList.Count; index++)
+            //            {
+            //                if (_userFollowersList[index].UserName == "an.mehendy")
+            //                {
+            //                    var a = 1;
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
 
             return true;
         }

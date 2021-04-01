@@ -27,7 +27,7 @@ namespace InstaBot
 
             lblAccountLoginStatus.Text = @"Status: Attempting to log in.";
 
-            //var login = await _instagramClient.Login(txtAccountUsername.Text, txtAccountPassword.Text);
+            // var login = await _instagramClient.Login(txtAccountUsername.Text, txtAccountPassword.Text);
             var login = await _instagramClient.Login(Data.Name1, Data.Password1);
 
             if(login.Succeeded)

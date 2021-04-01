@@ -109,6 +109,11 @@ namespace TestDataService
             return _instaApi.GetUserInfoByIdAsync(pk);
         }
 
+        public Task<IResult<InstaStory>> GetUserStoryAsync(long userId)
+        {
+            return _instaApi.GetUserStoryAsync(userId);
+        }
+
         public Task<IResult<bool>> LikeMedia(string mediaId)
         {
             return _instaApi.LikeMediaAsync(mediaId);
