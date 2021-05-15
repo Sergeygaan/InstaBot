@@ -52,6 +52,7 @@
     <Compile Include="Data\UserActivitySection\InstagramUser.cs" />
     <Compile Include="Data\UserActivitySection\MediaLiker.cs" />
     <Compile Include="Extensions\AwaitHelper.cs" />
+    <Compile Include="Extensions\Browser.cs" />
     <Compile Include="Extensions\DownloadFile.cs" />
     <Compile Include="Extensions\FileHelper.cs" />
     <Compile Include="Extensions\UnixTimestamp.cs" />

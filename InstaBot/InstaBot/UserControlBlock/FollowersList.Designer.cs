@@ -37,6 +37,7 @@
             this.LoadButton = new System.Windows.Forms.Button();
             this.CountLabel = new System.Windows.Forms.Label();
             this.LikesPostedLabel = new System.Windows.Forms.Label();
+            this.OpenUserButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -121,11 +122,22 @@
             this.LikesPostedLabel.TabIndex = 19;
             this.LikesPostedLabel.Text = "Likes posted: 0";
             // 
+            // OpenUserButton
+            // 
+            this.OpenUserButton.Location = new System.Drawing.Point(304, 326);
+            this.OpenUserButton.Name = "OpenUserButton";
+            this.OpenUserButton.Size = new System.Drawing.Size(96, 23);
+            this.OpenUserButton.TabIndex = 26;
+            this.OpenUserButton.Text = "Open user";
+            this.OpenUserButton.UseVisualStyleBackColor = true;
+            this.OpenUserButton.Click += new System.EventHandler(this.OpenUserButton_Click);
+            // 
             // FollowersList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
+            this.Controls.Add(this.OpenUserButton);
             this.Controls.Add(this.LikesPostedLabel);
             this.Controls.Add(this.CountLabel);
             this.Controls.Add(this.groupBox1);
@@ -150,5 +162,6 @@
         private System.Windows.Forms.ColumnHeader User;
         private System.Windows.Forms.ColumnHeader NumberLikes;
         private System.Windows.Forms.Label LikesPostedLabel;
+        private System.Windows.Forms.Button OpenUserButton;
     }
 }

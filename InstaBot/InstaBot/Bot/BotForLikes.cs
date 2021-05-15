@@ -83,7 +83,7 @@ namespace InstaBot.Bot
                     continue;
                 }
 
-                if (_numberLikesDay >= 200)
+                if (_numberLikesDay >= 150)
                 {
                     GetTextLog(new AffixedLikesUser { Text = "Достигнут лимит лайков на день" });
                     GetTextLog(new AffixedLikesUser { Text = "Конец" });
@@ -121,7 +121,18 @@ namespace InstaBot.Bot
 
                                 followersList.DisplayOnTheScreenUserList(_usersList);
 
-                                Thread.Sleep(_rand.Next(120000, 150000));
+                                Thread.Sleep(_rand.Next(150000, 180000));
+                            }
+                            else
+                            {
+                                GetTextLog(new AffixedLikesUser
+                                {
+                                    UserName = instagramUser.UserName,
+                                    UrlMedia = $"https://www.instagram.com/p/{currentMedia.Code}",
+                                    Text = "Не удалось поставить лайк"
+                                });
+
+                                Thread.Sleep(_rand.Next(30000, 40000));
                             }
                         }
                     }
@@ -151,7 +162,7 @@ namespace InstaBot.Bot
                     });
                 }
 
-                Thread.Sleep(_rand.Next(15000, 30000));
+                Thread.Sleep(_rand.Next(25000, 35000));
             }
 
             GetTextLog(new AffixedLikesUser { Text = "Конец" });

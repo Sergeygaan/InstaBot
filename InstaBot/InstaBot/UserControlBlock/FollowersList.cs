@@ -5,6 +5,7 @@ using TestDataService.Extensions;
 using TestDataService.Data.UserActivitySection;
 using System.Linq;
 using System.Reflection;
+using Extensions;
 
 namespace InstaBot
 {
@@ -109,6 +110,19 @@ namespace InstaBot
         private List<InstagramUser> _usersList;
 
         private string _nameFollowersList;
+
+        private void OpenUserButton_Click(object sender, EventArgs e)
+        {
+            if (UserListView.SelectedIndices.Count > 0)
+            {
+                var subItemText = UserListView.SelectedItems[0].SubItems[0].Text;
+
+                if (!string.IsNullOrEmpty(subItemText))
+                {
+                    Browser.Open("https://www.instagram.com/" + subItemText);
+                }
+            }
+        }
     }
 
     public static class ControlExtensions

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using TestDataService.Data.UserActivitySection;
@@ -73,7 +74,7 @@ namespace InstaBot
 
                 if (!string.IsNullOrEmpty(subItemText))
                 {
-                    OpenBrowser("https://www.instagram.com/" + subItemText);
+                    Browser.Open("https://www.instagram.com/" + subItemText);
                 }
             }
         }
@@ -84,32 +85,9 @@ namespace InstaBot
             {
                 var subItemText = AffixedLikesListView.SelectedItems[0].SubItems[1].Text;
 
-                OpenBrowser(subItemText);
+                Browser.Open(subItemText);
             }
         }
-
-        private void OpenBrowser(string subItemText)
-        {
-            if (!string.IsNullOrEmpty(subItemText))
-            {
-                try
-                {
-                    System.Diagnostics.Process.Start("chrome", subItemText + " --new-window --start-fullscreen");
-                }
-                catch
-                {
-                    try
-                    {
-                        System.Diagnostics.Process.Start("firefox", "-new-window" + subItemText);
-                    }
-                    catch (Exception exception)
-                    {
-                        MessageBox.Show(exception.Message);
-                    }
-                }
-            }
-        }
-
 
         private List<AffixedLikesUser> affixedLikesUsersList;
     }
